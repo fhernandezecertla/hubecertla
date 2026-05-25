@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecert - Hub de Soluciones Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #4F46E5;
+    --primary-dark: #3730A3;
+    --primary-light: #EEF2FF;
+    --bg-color: #F4F6F9;
+    --surface: #FFFFFF;
+    --text-dark: #111827;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .section-label {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* --- HERO SECTION --- */
+  .hero {
+    background: linear-gradient(135deg, #1E1B4B 0%, #4338CA 100%);
+    padding: 5rem 2rem 7rem 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: var(--bg-color);
+    transform: skewY(-2deg);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 span {
+    color: #A5B4FC;
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: #E0E7FF;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 400;
+  }
+
+  /* --- SEARCH BOX --- */
+  .search-wrapper {
+    max-width: 800px;
+    margin: -40px auto 40px auto;
+    position: relative;
+    z-index: 10;
+    padding: 0 20px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 1.4rem 2rem 1.4rem 3.5rem;
+    font-size: 1.15rem;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+    background: var(--surface) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%239CA3AF"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>') no-repeat 20px center;
+    background-size: 24px;
+    color: var(--text-dark);
+  }
+
+  .search-input:focus {
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+    border: 2px solid var(--primary);
+    padding: 1.4rem 2rem 1.4rem 3.5rem; /* prevent layout shift on border */
+  }
+
+  /* --- FILTERS --- */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem 2rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .filter-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-soft);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .filter-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: #C7D2FE;
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
+
+  /* --- GRID & CARDS --- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255,255,255,0.1); /* para un leve brillo en bordes */
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 15px;
+  }
+
+  .card h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text-dark);
+    line-height: 1.25;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* --- BADGES --- */
+  .badge {
+    font-size: 0.7rem;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'Poppins', sans-serif;
+  }
+  .badge-ci { background: #EEEDFE; color: #3C3489; }
+  .badge-firma { background: #E1F5EE; color: #085041; }
+  .badge-mandato { background: #FBEAF0; color: #72243E; }
+  .badge-afp { background: #E6F1FB; color: #0C447C; }
+  .badge-val { background: #FFF5F5; color: #9B2C2C; }
+  .badge-tsa { background: #F0FDF4; color: #166534; }
+
+  /* --- INTERNAL CONTENT --- */
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    margin: 1.5rem 0 0.75rem 0;
+    letter-spacing: 0.08em;
+  }
+
+  /* Pitch Box elegante */
+  .pitch-box {
+    background: linear-gradient(to right, var(--primary-light), var(--surface));
+    border-left: 4px solid var(--primary);
+    padding: 1.25rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #374151;
+    position: relative;
+    font-style: italic;
+  }
+
+  .pitch-box em {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+
+  /* Timeline de pasos */
+  .steps {
+    position: relative;
+    padding-left: 32px;
+    margin-top: 10px;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #4B5563;
+    line-height: 1.5;
+  }
+
+  .step:last-child {
+    margin-bottom: 0;
+  }
+
+  .step-num {
+    position: absolute;
+    left: -32px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+    box-shadow: 0 0 0 4px var(--surface);
+  }
+
+  /* Key points (Grid) */
+  .key-points {
+    display: grid;
+    gap: 12px;
+  }
+
+  .kp {
+    background: #F9FAFB;
+    border: 1px solid var(--border);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    color: #4B5563;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
+  
+  .kp:hover {
+    background: var(--surface);
+    border-color: #D1D5DB;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .kp strong {
+    display: block;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+  }
+
+  /* Tips */
+  .tip-box {
+    background: #FFFBEB;
+    border: 1px solid #FEF3C7;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: #92400E;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-box strong {
+    color: #78350F;
+  }
+
+  .tip-box::before {
+    content: '💡';
+    font-size: 1.2rem;
+  }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 5rem 2rem;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    display: none;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+    .hero { padding: 4rem 1.5rem 5rem 1.5rem; }
+    .hero h1 { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Portal de Soluciones & Buscador <span>ecert</span></h1>
+      <p>Argumentos de venta, flujos de integración y detalles técnicos, todo en un solo lugar y al instante.</p>
+    </div>
+  </header>
+
+  <div class="search-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por servicio, API, palabras clave o concepto...">
+  </div>
+
+  <main class="container">
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <!--button class="filter-btn" data-filter="Validación de identidad">Validación de Identidad</button-->
+    <button class="filter-btn" data-filter="API validación">Validación CI & APIs Validación sin firma</button>
+    <button class="filter-btn" data-filter="Firma electrónica">Firma Electrónica</button>
+    <button class="filter-btn" data-filter="Previred / AFP">Previred & AFP</button>
+    <button class="filter-btn" data-filter="Mandato / Débito">Mandatos</button>
+    <button class="filter-btn" data-filter="Sellado de tiempo">Sellado de tiempo</button>
+    
+  </div>
+
+  <div class="grid" id="cardsGrid">
+    <div class="no-results" id="noResults">No se encontraron servicios que coincidan con tu búsqueda. Intenta con otros términos.</div>
+
+
+     
+    <article class="card" data-category="API validación">
+      
+      <div class="card-header">
+        <div>
+          <h2>Validación de cédula de identidad</h2>
+          <p class="subtitle">Registro Civil / Buró (TransUnion o Equifax) / Combinado</p>
+        </div>
+        <span class="badge badge-ci">API Validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Lo que hacemos es permitirle a tu sistema verificar en tiempo real que la persona que está del otro lado <em>existe y es quien dice ser</em>. Le pasas el RUT y el número de serie de la cédula, y nosotros consultamos directamente al Registro Civil o a los burós de crédito. En segundos te devolvemos si la cédula es vigente, si está bloqueada, fecha de vencimiento, y en el caso del buró, también datos como nacionalidad o indicador de fallecimiento. Todo con una sola llamada API."</div>
+      <div class="section-label">Cómo funciona </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema se autentica con ecert y obtiene un token de acceso temporal.</span></div>
+        <div class="step"><div class="step-num">2</div><span>Envías el RUT y el número de serie de la cédula al endpoint de validación.</span></div>
+        <div class="step"><div class="step-num">3</div><span>ecert consulta la fuente correspondiente (Registro Civil, TransUnion o Equifax).</span></div>
+        <div class="step"><div class="step-num">4</div><span>Tu sistema recibe en respuesta los datos de validación listos para usar.</span></div>
+      </div>
+      <div class="section-label">Puntos clave</div>
+      <div class="key-points">
+        <div class="kp"><strong>3 modalidades</strong>Solo Registro Civil, solo Buró, o combinado TU + Registro Civil con datos enriquecidos (nombre, fecha nacimiento, edad).</div>
+        <div class="kp"><strong>Respuesta enriquecida</strong>El modo combinado devuelve más campos: nombres y apellidos, indicador de bloqueo, vigencia, ideal para onboarding digital.</div>
+        <div class="kp"><strong>Sin complejidad operativa</strong>Todo resuelto vía API REST. No hay intervención humana ni proceso manual.</div>
+        <div class="kp"><strong>Diferenciador real</strong>El cliente no tiene que gestionar convenios con Registro Civil o burós, ecert ya los tiene.</div>
+      </div>
+      <div class="tip-box"><strong>Cuando el cliente pregunta "¿y si el Registro Civil cae?"</strong>  explica que en el modo buró priorizado, ecert elige automáticamente la fuente disponible (TransUnion o Equifax), lo que da mayor resiliencia operacional.</div>
+    </article>
+
+    <article class="card" data-category="Mandato / Débito">
+      <div class="card-header">
+        <div>
+          <h2>EPAC 2.0</h2>
+          <p class="subtitle">Mandato de débito electrónico con verificación de identidad y firma</p>
+        </div>
+        <span class="badge badge-mandato">Mandato / Débito</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"EPAC es el flujo completo para que tu cliente autorice un mandato de débito automático de forma 100% digital. El usuario pasa por verificación de identidad, firma el documento, y el mandato queda registrado ante el banco concentrador CCA. <em>No hay papel, no hay sucursal, no hay llamada telefónica.</em> Todo desde el canal digital del cliente."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema crea el mandato en ecert con el código CCA y los datos del pagador.</span></div>
+        <div class="step"><div class="step-num">2</div><span>ecert consulta al CCA para validar la cuenta y obtener el identificador del mandato.</span></div>
+        <div class="step"><div class="step-num">3</div><span>ecert genera una URL de firma que le entregas al usuario final.</span></div>
+        <div class="step"><div class="step-num">4</div><span>El usuario verifica su identidad y firma. ecert notifica el resultado vía webhook al sistema del cliente.</span></div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Requiere código CCA</strong>El cliente debe tener convenio CCA previo. Es un prerrequisito, no una limitación.</div>
+        <div class="kp"><strong>3 formas de recibir el mandato firmado</strong>Webhook, correo electrónico automático, o consulta directa al método de vista previa.</div>
+        <div class="kp"><strong>Configuración inicial única</strong>Solo hay que registrar una vez la URL callback y el webhook. Después, el flujo es completamente automatizado.</div>
+        <div class="kp"><strong>Manejo de errores integrado</strong>Si el CCA rechaza, ecert muestra al usuario la descripción del error directamente.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>FAO / FES Enrolada</h2>
+          <p class="subtitle">Firma con certificado digital previamente creado en ecert</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio es para cuando el firmante ya tiene un certificado digital en ecert. Es el flujo más robusto: tu sistema sube el documento, ecert lo envía al usuario para que lo firme ya sea por correo o desde el portal empresas y cuando el usuario acepta o rechaza, tu sistema recibe el resultado con el documento firmado. <em>La identidad del firmante está acreditada por su certificado digital.</em>"</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema se autentica, crea una preinscripción y sube el documento a firmar.</span></div>
+        <div class="step"><div class="step-num">2</div><span>ecert devuelve un ID de documento. Tu sistema notifica al firmante (vía correo o portal empresas).</span></div>
+        <div class="step"><div class="step-num">3</div><span>El usuario visualiza el documento y decide firmar o rechazar.</span></div>
+        <div class="step"><div class="step-num">4</div><span>ecert envía el set de documentos firmados (o la razón de rechazo) al webhook configurado.</span></div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Requisito clave</strong>El firmante debe tener su certificado digital creado previamente en la plataforma ecert.</div>
+        <div class="kp"><strong>Dos canales de notificación</strong>Por correo electrónico o acceso directo al portal empresas, el cliente elige qué experiencia ofrece.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>Motor de Firma Simple</h2>
+          <p class="subtitle">Firma sin cambio de contexto, estampa datos del firmante al instante</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este es el servicio más rápido y directo: tu sistema envía el documento y los datos del firmante, ecert estampa la firma y te devuelve el PDF firmado en base64 en la misma llamada. <em>No hay redirección, no hay interacción del usuario.</em> Es ideal cuando el proceso de verificación de identidad ya fue realizado por el propio sistema del cliente y solo necesita estampar la firma."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema se autentica y obtiene token.</span></div>
+        <div class="step"><div class="step-num">2</div><span>Envías el documento y los datos del firmante al endpoint MotorFirmaSimple.</span></div>
+        <div class="step"><div class="step-num">3</div><span>ecert devuelve el documento firmado en base64. Listo.</span></div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>No valida identidad</strong>ecert estampa los datos tal como vienen en el request. La validación de identidad es responsabilidad del sistema cliente.</div>
+        <div class="kp"><strong>Máxima simplicidad técnica</strong>Solo 3 pasos, sin flujo de usuario, sin webhooks. Integración en horas.</div>
+      </div>
+      <div class="tip-box"><strong>Cuándo recomendarlo:</strong> clientes que ya tienen su propio proceso de onboarding e identidad y solo necesitan la firma como capa final de su flujo.</div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>FAO / FES de un uso</h2>
+          <p class="subtitle">Firma para usuarios sin certificado previo — flujo de un solo uso</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio resuelve uno de los problemas más comunes: <em>el usuario que necesita firmar pero no tiene certificado digital.</em> ecert gestiona todo el proceso de verificación de identidad en el momento mismo de la firma. Tu sistema sube el documento, le entrega al usuario un link ya sea por correo o embebido en tu web y el usuario firma de forma segura en un flujo de un solo uso. Al final, tu sistema recibe el documento firmado vía webhook."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema crea una preinscripción y sube el documento. ecert devuelve una URL de firma única.</span></div>
+        <div class="step"><div class="step-num">2</div><span>Tu sistema entrega esa URL al usuario (por correo o exponiéndola directamente).</span></div>
+        <div class="step"><div class="step-num">3</div><span>El usuario verifica su identidad y firma (o rechaza) el documento.</span></div>
+        <div class="step"><div class="step-num">4</div><span>ecert envía el resultado al webhook de tu sistema. Si firmó, el usuario es redirigido al UrlCallback del cliente.</span></div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Cero fricción para el usuario</strong>No necesita tener cuenta previa en ecert ni instalar nada.</div>
+        <div class="kp"><strong>Control del flujo</strong>Se puede caducar la preinscripción en cualquier momento del proceso.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>Firma Simple Certificada (FES Certificada)</h2>
+          <p class="subtitle">Combinación de producto con ProductoCombinadoId</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"La FES Certificada es esencialmente el mismo flujo que la firma de un uso, pero con un nivel de certeza adicional: se utiliza un <em>ProductoCombinadoId</em> que ecert entrega al cliente, el cual define exactamente qué combinación de validaciones y firma aplica para su caso de uso específico. Es una solución parametrizable que ecert configura según el contexto regulatorio o de negocio del cliente."</div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>ProductoCombinadoId</strong>Es un identificador que ecert entrega al cliente. Define qué producto y flujo se ejecuta. No es algo que el cliente configure por su cuenta.</div>
+        <div class="kp"><strong>Mismo flujo técnico</strong>La integración es prácticamente idéntica a FAO 1 uso, la diferencia está en el parámetro de configuración, no en la complejidad.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>Firma Bioelectrónica (FBE)</h2>
+          <p class="subtitle">Firma con validación de identidad biométrica — requiere kit ecert</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"La FBE es el nivel más alto de certeza de identidad en el proceso de firma. Antes de que el usuario pueda firmar el documento, <em>valida su identidad mediante biometría dactilar</em> usando el kit biométrico de ecert. Si la validación falla, no hay firma y si falla el proceso completo, hay que iniciar un nuevo flujo. Es el producto indicado para contextos donde la responsabilidad legal del firmante debe ser irrefutable."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Mismo flujo inicial que FAO 1 uso: preinscripción, carga de documento.</span></div>
+        <div class="step"><div class="step-num">2</div><span>Antes de firmar, el usuario pasa por el componente biométrica de ecert para validar su identidad.</span></div>
+        <div class="step"><div class="step-num">3</div><span>Si la biometría es exitosa, el usuario puede firmar. El resultado llega vía webhook.</span></div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Requiere hardware</strong>El cliente debe tener el kit biométrico de ecert instalado y conectado. No funciona en móvil sin el kit.</div>
+        <div class="kp"><strong>Validación fallida = nuevo flujo</strong>Si la biometría no pasa, se debe iniciar un proceso completamente nuevo.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Previred / AFP">
+      <div class="card-header">
+        <div>
+          <h2>Infocotizaciones / Mandatos</h2>
+          <p class="subtitle">Acceso a datos previsionales de Previred con validación de identidad</p>
+        </div>
+        <span class="badge badge-afp">Previred / AFP</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio le permite a tu sistema obtener la información de cotizaciones previsionales de un trabajador desde Previred, <em>pero con validación de identidad de por medio.</em> El trabajador autoriza el acceso a sus datos firmando un disclaimer ya sea con biometría o con Firma Avanzada Online y ecert genera el token que Previred necesita para entregar esa información. Todo el proceso queda con evidencia firmada guardada por 5 años."</div>
+      <div class="section-label">Dos modalidades disponibles</div>
+      <div class="key-points">
+        <div class="kp"><strong>Con biometría (FBE)</strong>El ejecutivo conduce el proceso presencialmente. El usuario valida identidad con huella dactilar y kit ecert.</div>
+        <div class="kp"><strong>Con FAO (firma avanzada online)</strong>El usuario puede hacer el proceso de forma remota. Valida su identidad en el portal ecert y firma el disclaimer digitalmente.</div>
+      </div>
+      <div class="tip-box"><strong>El diferenciador clave:</strong> ecert no solo entrega el token genera una traza de auditoría con el disclaimer firmado con FEA, guardado por 5 años. Eso es evidencia legal del consentimiento del trabajador.</div>
+    </article>
+
+    <article class="card" data-category="Previred / AFP">
+      <div class="card-header">
+        <div>
+          <h2>Traspasos AFP</h2>
+          <p class="subtitle">Flujo de traspaso de fondos previsionales con validación de identidad ecert</p>
+        </div>
+        <span class="badge badge-afp">Previred / AFP</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Con este servicio, una AFP puede ofrecer a sus afiliados el traspaso de fondos de forma completamente digital. <em>ecert actúa como el ente validador de identidad</em> entre la AFP, el afiliado y Previred. El afiliado se valida  con Clave Única en el caso estándar, o con CI + CU + Challenge en la versión FAO 2.0  ecert genera un disclaimer firmado con valor legal, y Previred entrega el TVI a la AFP para ejecutar el traspaso."</div>
+      <div class="section-label">Dos versiones del flujo</div>
+      <div class="key-points">
+        <div class="kp"><strong>Traspaso AFP (Clave Única)</strong>Validación solo con ClaveÚnica. Disclaimer firmado con FES. Más simple, para contextos de menor riesgo.</div>
+        <div class="kp"><strong>Traspaso AFP 2.0 FAO</strong>Validación con CI + CU + Challenge de preguntas. Disclaimer firmado con FAO. Mayor nivel de certeza legal.</div>
+      </div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Evidencia por 5 años</strong>En ambas versiones, ecert guarda el disclaimer firmado por 5 años.</div>
+        <div class="kp"><strong>Previred como validador final</strong>Previred valida con ecert que las credenciales son legítimas antes de entregar el TVI a la AFP.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Firma electrónica">
+      <div class="card-header">
+        <div>
+          <h2>Automatización FES</h2>
+          <p class="subtitle">Emisión programática de certificados de firma electrónica simple</p>
+        </div>
+        <span class="badge badge-firma">Firma electrónica</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio es para clientes que necesitan emitir certificados FES en volumen, de forma programática, sin intervención humana. Un programador o sistema backend llama a la API de ecert, obtiene los parámetros necesarios (regiones, provincias, comunas, actividades económicas), registra el convenio y ecert devuelve el certificado en formato PFX listo para usar. <em>Ideal para plataformas que gestionan firmas masivas o múltiples usuarios.</em>"</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Autenticación y obtención del token.</span></div>
+        <div class="step"><div class="step-num">2</div><span>Consulta de parámetros: producto FES, regiones, provincias, comunas, actividad económica.</span></div>
+        <div class="step"><div class="step-num">3</div><span>Registro del convenio en la API.</span></div>
+        <div class="step"><div class="step-num">4</div><span>ecert devuelve el certificado en base64 formato PFX.</span></div>
+      </div>
+    </article>
+
+    <article class="card" data-category="Sellado de tiempo">
+      <div class="card-header">
+        <div>
+          <h2>TSA — Sellado de tiempo</h2>
+          <p class="subtitle">Timestamping certificado para documentos</p>
+        </div>
+        <span class="badge badge-tsa">Sellado de tiempo</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"El TSA es simple pero poderoso: permite acreditar con certeza legal el <em>momento exacto en que un documento existió</em>. Tu sistema envía el documento, y ecert lo devuelve con un sello de tiempo certificado. Eso es irrefutable ante cualquier auditoría o proceso legal. No requiere flujo de usuario, no requiere firma es solo la certeza del instante."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Tu sistema envía el documento al endpoint TSA con el APIkey en el header.</span></div>
+        <div class="step"><div class="step-num">2</div><span>ecert devuelve el documento sellado en base64. Un paso, una llamada.</span></div>
+      </div>
+      <div class="tip-box"><strong>Cuándo surge la necesidad:</strong> auditorías, contratos con fechas críticas, registros de acuerdos, evidencia de notificaciones. Cualquier contexto donde "¿cuándo existió este documento?" sea una pregunta con consecuencias.</div>
+    </article>
+
+    <article class="card" data-category="API validación">
+      <div class="card-header">
+        <div>
+          <h2>Validación sin firma — Biometría</h2>
+          <p class="subtitle">Verificación de identidad biométrica sin generar firma electrónica</p>
+        </div>
+        <span class="badge badge-val">API validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio permite validar la identidad de una persona mediante huella dactilar, <em>sin necesidad de generar una firma electrónica.</em> Es parte del grupo de APIs de validación sin firma, pensadas para contextos donde necesitas confirmar que la persona es quien dice ser, pero el caso de uso no requiere un documento firmado como resultado. La componente biométrica se levanta en localhost con el kit ecert, y el resultado queda registrado en la plataforma."</div>
+      <div class="section-label">Puntos clave </div>
+      <div class="key-points">
+        <div class="kp"><strong>Requiere kit ecert instalado</strong>La componente biométrica debe estar funcionando en el equipo del ejecutivo.</div>
+        <div class="kp"><strong>3 intentos por transacción</strong>Si los 3 fallan, se debe generar una nueva transacción completa.</div>
+        <div class="kp"><strong>Estado consultable</strong>La transacción tiene un estado que se puede consultar hasta confirmar "authorized".</div>
+        <div class="kp"><strong>Cancelable en cualquier momento</strong>Se puede cancelar la transacción después del paso 3 del flujo.</div>
+      </div>
+    </article>
+
+    <article class="card" data-category="API validación">
+      <div class="card-header">
+        <div>
+          <h2>Validación sin firma — Clave Única</h2>
+          <p class="subtitle">Verificación de identidad con ClaveÚnica del gobierno</p>
+        </div>
+        <span class="badge badge-val">API validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio permite verificar la identidad de un usuario usando su <em>Clave Única del gobierno chileno</em>, sin que el resultado sea una firma electrónica. Tu sistema inicia el flujo, ecert redirige al usuario al portal de ClaveÚnica, y una vez que el gobierno confirma la identidad, ecert te notifica el resultado. Es ideal para onboarding digital, validación de clientes o cualquier proceso donde la ClaveÚnica sea el estándar de confianza."</div>
+    </article>
+
+    <article class="card" data-category="API validación">
+      <div class="card-header">
+        <div>
+          <h2>Validación sin firma — Cédula de Identidad</h2>
+          <p class="subtitle">Consulta a Registro Civil o Buró sin generar firma</p>
+        </div>
+        <span class="badge badge-val">API validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Es la misma lógica de validación de CI que los servicios de validación estándar, pero dentro del framework de la API de Verificación Online de ecert. Tu sistema crea una solicitud de verificación de identidad, ejecuta la validación de cédula contra Registro Civil o Buró, y recibe el resultado  "aprobado o no aprobado" en el mismo flujo. <em>Permite combinar múltiples validaciones dentro de una misma transacción de verificación.</em>"</div>
+    </article>
+
+    <article class="card" data-category="API validación">
+      <div class="card-header">
+        <div>
+          <h2>Validación sin firma — Email</h2>
+          <p class="subtitle">Verificación de correo electrónico con clave dinámica OTP</p>
+        </div>
+        <span class="badge badge-val">API validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio verifica que la persona tiene acceso real al correo electrónico que declaró. Tu sistema solicita a ecert que genere y envíe una <em>clave dinámica (OTP)</em> al correo del usuario. Luego, cuando el usuario ingresa esa clave, tu sistema la valida con ecert y obtiene un resultado OK o NOK. Perfecto como capa de verificación adicional en procesos de onboarding o doble factor."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Autenticación y creación de solicitud de verificación de identidad.</span></div>
+        <div class="step"><div class="step-num">2</div><span>POST para generar y enviar la clave dinámica al correo del usuario.</span></div>
+        <div class="step"><div class="step-num">3</div><span>PUT para verificar la clave ingresada por el usuario respuesta OK o NOK.</span></div>
+      </div>
+    </article>
+
+    <article class="card" data-category="API validación">
+      <div class="card-header">
+        <div>
+          <h2>Validación sin firma — Challenge de preguntas</h2>
+          <p class="subtitle">Verificación de identidad mediante preguntas de conocimiento</p>
+        </div>
+        <span class="badge badge-val">API validación</span>
+      </div>
+      <div class="section-label">Explicación</div>
+      <div class="pitch-box">"Este servicio valida la identidad de una persona mediante un <em>conjunto de preguntas de conocimiento personal</em> del tipo que solo alguien con acceso a información real sobre esa persona podría responder. Tu sistema solicita el challenge a ecert, se lo presenta al usuario, y luego envía las respuestas para validación. El resultado es OK o NOK. Es una capa de verificación que no requiere documentos físicos ni hardware especial."</div>
+      <div class="section-label">Cómo funciona</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><span>Autenticación y creación de solicitud de verificación.</span></div>
+        <div class="step"><div class="step-num">2</div><span>POST para generar el challenge ecert devuelve las preguntas.</span></div>
+        <div class="step"><div class="step-num">3</div><span>PUT para enviar las respuestas del usuario ecert responde OK o NOK.</span></div>
+      </div>
+    </article>
+
+  </div>
+</div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+    const noResults = document.getElementById('noResults');
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        // textContent es la forma más segura de evitar conflictos con CSS (text-transform)
+        const textContent = card.textContent.toLowerCase();
+        const cardCategory = card.getAttribute('data-category');
+        
+        const matchesSearch = searchTerm === '' || textContent.includes(searchTerm);
+        const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Efecto visual suave al mostrar/ocultar "No hay resultados"
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+        noResults.style.animation = 'fadeIn 0.3s ease';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+
+    // Animación simple para el panel de error
+    const style = document.createElement('style');
+    style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`;
+    document.head.appendChild(style);
+
+    // Eventos del buscador (input reacciona en tiempo real, keyup como respaldo)
+    searchInput.addEventListener('input', filterCards);
+    searchInput.addEventListener('keyup', filterCards);
+
+    // Lógica de los botones de filtro
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        currentCategory = this.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    // Filtro inicial al cargar
+    filterCards();
+  </script>
+</body>
+</html>
