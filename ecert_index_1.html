@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ecert · Capacitación Técnica — Customer Success</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --magenta: #b01f8c;
+    --cyan:    #0090b9;
+    --teal:    #00a88b;
+    --navy:    #25215f;
+    --navy-80: rgba(37,33,95,0.8);
+    --navy-10: rgba(37,33,95,0.07);
+    --white:   #ffffff;
+    --off:     #f7f8fc;
+    --border:  #e2e5f0;
+    --text:    #1a1a2e;
+    --muted:   #6b7280;
+    --success: #00a88b;
+    --warn:    #f59e0b;
+    --danger:  #ef4444;
+    --code-bg: #1e1e3a;
+    --sidebar-w: 280px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--off);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--navy);
+    color: var(--white);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: transform .3s;
+  }
+
+  .sidebar-header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .sidebar-logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sidebar-subtitle {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Search */
+  .sidebar-search {
+    padding: 16px 16px 8px;
+  }
+
+  .sidebar-search input {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: var(--white);
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+    transition: border-color .2s, background .2s;
+  }
+
+  .sidebar-search input::placeholder { color: rgba(255,255,255,0.35); }
+  .sidebar-search input:focus {
+    border-color: var(--cyan);
+    background: rgba(255,255,255,0.12);
+  }
+
+  .search-hint {
+    text-align: center;
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Nav */
+  .nav-section {
+    padding: 8px 12px 4px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 12px 8px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    transition: background .15s, color .15s;
+    margin-bottom: 1px;
+  }
+
+  .nav-item:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(176,31,140,0.3), rgba(0,144,185,0.3));
+    color: var(--white);
+    border-left: 3px solid var(--magenta);
+    padding-left: 9px;
+  }
+
+  .nav-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--magenta);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+  }
+
+  .progress-wrap {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--magenta), var(--cyan));
+    border-radius: 2px;
+    transition: width .5s;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Top bar */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .topbar-breadcrumb {
+    font-size: 13px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .breadcrumb-sep { color: var(--border); }
+  .breadcrumb-current { color: var(--navy); font-weight: 500; }
+
+  .topbar-actions { display: flex; gap: 12px; align-items: center; }
+
+  .btn-nav {
+    background: var(--navy-10);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+    cursor: pointer;
+    transition: background .15s;
+    font-family: 'Roboto', sans-serif;
+  }
+  .btn-nav:hover { background: var(--border); }
+
+  .btn-primary {
+    background: var(--magenta);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+    font-family: 'Roboto', sans-serif;
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    padding: 48px 40px;
+    max-width: 1100px;
+  }
+
+  .section.active { display: block; }
+
+  /* Hero section */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #3d2a6b 60%, #1a3a5c 100%);
+    color: white;
+    padding: 64px 40px;
+    display: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero.active { display: block; }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(176,31,140,0.25), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 500px; height: 300px;
+    background: radial-gradient(circle, rgba(0,144,185,0.2), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-block;
+    background: rgba(176,31,140,0.25);
+    border: 1px solid rgba(176,31,140,0.5);
+    color: #f0a0dc;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    max-width: 620px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .module-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: background .2s, transform .2s, border-color .2s;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .module-card:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+    border-color: rgba(176,31,140,0.4);
+  }
+
+  .module-icon-wrap {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .module-card h3 { font-size: 14px; font-weight: 700; color: white; margin-bottom: 4px; }
+  .module-card p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  /* ── SECTION CONTENT ── */
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy-10);
+    border: 1px solid rgba(37,33,95,0.15);
+    color: var(--navy);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 8px;
+    max-width: 680px;
+    line-height: 1.7;
+  }
+
+  .reading-time {
+    background: var(--navy-10);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--navy);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .reading-time span { font-weight: 700; }
+
+  /* Content blocks */
+  h3.sub { font-size: 18px; font-weight: 700; color: var(--navy); margin: 32px 0 14px; }
+  h4.sub2 { font-size: 15px; font-weight: 700; color: var(--navy); margin: 24px 0 10px; }
+
+  p.body { color: var(--text); line-height: 1.75; margin-bottom: 14px; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  .callout.info { background: rgba(0,144,185,0.08); border-left: 4px solid var(--cyan); }
+  .callout.info strong { color: var(--cyan); }
+
+  .callout.warning { background: rgba(245,158,11,0.08); border-left: 4px solid var(--warn); }
+  .callout.warning strong { color: var(--warn); }
+
+  .callout.success { background: rgba(0,168,139,0.08); border-left: 4px solid var(--teal); }
+  .callout.success strong { color: var(--teal); }
+
+  .callout.critical { background: rgba(176,31,140,0.08); border-left: 4px solid var(--magenta); }
+  .callout.critical strong { color: var(--magenta); }
+
+  /* Product cards */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+
+  .product-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: box-shadow .2s, transform .2s;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 8px 32px rgba(37,33,95,0.1);
+    transform: translateY(-2px);
+  }
+
+  .product-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .product-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .icon-magenta { background: rgba(176,31,140,0.1); }
+  .icon-cyan    { background: rgba(0,144,185,0.1); }
+  .icon-teal    { background: rgba(0,168,139,0.1); }
+  .icon-navy    { background: rgba(37,33,95,0.1); }
+
+  .product-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .product-version { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .product-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+  .product-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-magenta { background: rgba(176,31,140,0.1); color: var(--magenta); }
+  .tag-cyan    { background: rgba(0,144,185,0.1); color: var(--cyan); }
+  .tag-teal    { background: rgba(0,168,139,0.1); color: var(--teal); }
+  .tag-navy    { background: rgba(37,33,95,0.1); color: var(--navy); }
+  .tag-gray    { background: rgba(107,114,128,0.1); color: var(--muted); }
+
+  /* Steps */
+  .steps {
+    counter-reset: step;
+    margin: 20px 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: -10px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--magenta), transparent);
+  }
+
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    counter-increment: step;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--magenta), var(--cyan));
+    color: white;
+    font-weight: 900;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content {
+    padding: 8px 0 28px;
+    flex: 1;
+  }
+
+  .step-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .step-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* Code blocks */
+  .code-block {
+    background: var(--code-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .code-lang {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .code-copy {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: color .15s;
+    background: none;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .code-copy:hover { color: var(--cyan); }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+
+  .kw { color: #c792ea; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .key { color: #82aaff; }
+  .cmt { color: #546e7a; }
+  .url { color: #80cbc4; }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: white;
+  }
+
+  thead tr { background: var(--navy); color: white; }
+  th { padding: 12px 16px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.5px; }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--off); }
+  tr:hover td { background: rgba(37,33,95,0.03); }
+
+  .td-req { color: var(--danger); font-weight: 700; }
+  .td-opt { color: var(--muted); }
+
+  /* Accordion */
+  .accordion { margin: 16px 0; }
+
+  .acc-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .acc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background .15s;
+    gap: 12px;
+  }
+
+  .acc-header:hover { background: var(--off); }
+
+  .acc-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .acc-chevron {
+    color: var(--muted);
+    transition: transform .25s;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .acc-item.open .acc-chevron { transform: rotate(180deg); }
+
+  .acc-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .acc-item.open .acc-body { display: block; }
+
+  .acc-body p { margin: 12px 0 8px; }
+
+  /* Flow diagram */
+  .flow-diagram {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .flow-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .flow-box {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 100px;
+    line-height: 1.4;
+  }
+
+  .flow-box.client { background: rgba(176,31,140,0.12); color: var(--magenta); border: 1.5px solid var(--magenta); }
+  .flow-box.api    { background: rgba(37,33,95,0.1); color: var(--navy); border: 1.5px solid var(--navy); }
+  .flow-box.ecert  { background: rgba(0,144,185,0.1); color: var(--cyan); border: 1.5px solid var(--cyan); }
+  .flow-box.user   { background: rgba(0,168,139,0.1); color: var(--teal); border: 1.5px solid var(--teal); }
+  .flow-box.warn   { background: rgba(245,158,11,0.1); color: #b45309; border: 1.5px dashed var(--warn); }
+
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 16px;
+    padding: 0 8px;
+    font-weight: 700;
+  }
+
+  .flow-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--magenta);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  .flow-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  /* Comparison table */
+  .compare-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 13px;
+  }
+
+  .compare-table th {
+    background: var(--navy);
+    color: white;
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .compare-table th:first-child { text-align: left; }
+  .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); text-align: center; }
+  .compare-table td:first-child { text-align: left; font-weight: 600; color: var(--navy); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: var(--off); }
+
+  .check { color: var(--teal); font-size: 16px; }
+  .cross { color: var(--danger); font-size: 16px; }
+  .partial { color: var(--warn); font-size: 14px; }
+
+  /* Highlight box */
+  .highlight-box {
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+
+  .highlight-box.gradient-magenta {
+    background: linear-gradient(135deg, rgba(176,31,140,0.08), rgba(0,144,185,0.08));
+    border: 1px solid rgba(176,31,140,0.2);
+  }
+
+  .highlight-box.gradient-teal {
+    background: linear-gradient(135deg, rgba(0,168,139,0.08), rgba(0,144,185,0.08));
+    border: 1px solid rgba(0,168,139,0.2);
+  }
+
+  .highlight-box h4 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .highlight-box ul { padding-left: 18px; }
+  .highlight-box li { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 4px; }
+
+  /* Quiz */
+  .quiz-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin: 24px 0;
+  }
+
+  .quiz-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .quiz-subtitle { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  .quiz-question {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quiz-question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .quiz-q { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 12px; }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all .15s;
+  }
+
+  .quiz-option:hover { border-color: var(--cyan); background: rgba(0,144,185,0.04); }
+  .quiz-option.correct { border-color: var(--teal); background: rgba(0,168,139,0.08); color: var(--teal); font-weight: 600; }
+  .quiz-option.incorrect { border-color: var(--danger); background: rgba(239,68,68,0.06); color: var(--danger); }
+  .quiz-option.selected-wrong { border-color: var(--danger); background: rgba(239,68,68,0.06); }
+
+  .quiz-feedback {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: none;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.good { background: rgba(0,168,139,0.1); color: var(--teal); }
+  .quiz-feedback.bad  { background: rgba(239,68,68,0.1); color: var(--danger); }
+
+  /* Pill tabs */
+  .pill-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .pill-tab {
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: white;
+    color: var(--muted);
+    transition: all .15s;
+  }
+
+  .pill-tab:hover { border-color: var(--navy); color: var(--navy); }
+  .pill-tab.active { background: var(--navy); border-color: var(--navy); color: white; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Info grid */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .info-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .info-card-icon { font-size: 24px; margin-bottom: 10px; }
+  .info-card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .info-card-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-new { background: rgba(0,168,139,0.15); color: var(--teal); }
+  .badge-dep { background: rgba(239,68,68,0.12); color: var(--danger); }
+  .badge-v   { background: rgba(37,33,95,0.1); color: var(--navy); }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* Mobile toggle */
+  .mobile-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 200;
+    background: var(--magenta);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(176,31,140,0.4);
+  }
+
+  /* Scrollbar */
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+  /* Webhook retry visual */
+  .retry-timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 16px 0;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .retry-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(176,31,140,0.1);
+    border: 2px solid var(--magenta);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--magenta);
+    flex-shrink: 0;
+  }
+
+  .retry-line {
+    flex: 1;
+    min-width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--magenta), var(--cyan));
+  }
+
+  .retry-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .retry-wrap {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; }
+    .mobile-toggle { display: flex; align-items: center; justify-content: center; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .modules-grid { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: 32px 20px; }
+    .hero { padding: 40px 20px; }
+    .topbar { padding: 14px 20px; }
+    .hero h1 { font-size: 30px; }
+    .product-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">ecert</div>
+    <div class="sidebar-subtitle">Customer Success · Training</div>
+  </div>
+
+  <div class="sidebar-search">
+    <input type="text" id="searchInput" placeholder="Buscar módulo o producto…" autocomplete="off">
+    <div class="search-hint">Ctrl+K para buscar</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Inicio</div>
+    <div class="nav-item active" data-target="home">
+      <span class="nav-icon">🏠</span> Bienvenida al programa
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Fundamentos</div>
+    <div class="nav-item" data-target="fundamentos">
+      <span class="nav-icon">🔐</span> Firma Electrónica: Bases
+    </div>
+    <div class="nav-item" data-target="portfolio">
+      <span class="nav-icon">📦</span> Portafolio de Productos
+    </div>
+    <div class="nav-item" data-target="infraestructura">
+      <span class="nav-icon">🏗️</span> Arquitectura e Infraestructura
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Productos Core</div>
+    <div class="nav-item" data-target="fao-un-uso">
+      <span class="nav-icon">✍️</span> FAO/FES 1 Uso
+    </div>
+    <div class="nav-item" data-target="fao-enrolada">
+      <span class="nav-icon">🔑</span> FAO/FES Enrolada
+    </div>
+    <div class="nav-item" data-target="portal-empresa">
+      <span class="nav-icon">🏢</span> Portal Empresa
+    </div>
+    <div class="nav-item" data-target="identidad">
+      <span class="nav-icon">🪪</span> Verificación de Identidad
+    </div>
+    <div class="nav-item" data-target="biometria">
+      <span class="nav-icon">👁️</span> Biometría Facial
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Servicios Especializados</div>
+    <div class="nav-item" data-target="epac">
+      <span class="nav-icon">🏦</span> ePAC · Mandatos PAC
+    </div>
+    <div class="nav-item" data-target="custodia">
+      <span class="nav-icon">🗄️</span> Custodia 2.0
+    </div>
+    <div class="nav-item" data-target="tsa">
+      <span class="nav-icon">⏱️</span> Sellado de Tiempo TSA
+    </div>
+    <div class="nav-item" data-target="webhook">
+      <span class="nav-icon">🔔</span> Webhooks & Trazabilidad
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Integraciones</div>
+    <div class="nav-item" data-target="integracion">
+      <span class="nav-icon">⚙️</span> Guía de Integración API
+    </div>
+    <div class="nav-item" data-target="previred">
+      <span class="nav-icon">📊</span> Previred · Infocotizaciones
+    </div>
+    <div class="nav-item" data-target="hash">
+      <span class="nav-icon">#️⃣</span> Firma basada en Hash
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">CS Toolkit</div>
+    <div class="nav-item" data-target="flujos-uso">
+      <span class="nav-icon">🗺️</span> Flujos por caso de uso
+    </div>
+    <div class="nav-item" data-target="objeciones">
+      <span class="nav-icon">💬</span> Manejo de objeciones
+    </div>
+    <div class="nav-item" data-target="quiz">
+      <span class="nav-icon">🎯</span> Quiz de certificación <span class="nav-badge">TEST</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progreso del módulo</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    ecert LATAM · Versión 2026.1<br>Uso interno — Customer Success
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <span>Capacitación CS</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current" id="breadcrumbCurrent">Bienvenida</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-nav" id="prevBtn" onclick="navigateRelative(-1)">← Anterior</button>
+      <button class="btn-primary" id="nextBtn" onclick="navigateRelative(1)">Siguiente →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- HOME -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-home" class="hero active">
+    <div class="hero-label">📚 Programa de Capacitación Técnica</div>
+    <h1>Conviértete en un experto<br><span>ecert</span></h1>
+    <p class="hero-desc">
+      Este programa entrega a los equipos de Customer Success el conocimiento técnico y comercial necesario para acompañar, escalar y retener a los clientes de ecert LATAM con profundidad real.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">14</div>
+        <div class="stat-label">Módulos de capacitación</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">~4h</div>
+        <div class="stat-label">Duración estimada total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">300+</div>
+        <div class="stat-label">Clientes en Chile y Perú</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10K</div>
+        <div class="stat-label">Firmas diarias en LATAM</div>
+      </div>
+    </div>
+
+    <div class="modules-grid" style="margin-top:36px">
+      <div class="module-card" onclick="navigate('fundamentos')">
+        <div class="module-icon-wrap">🔐</div>
+        <div>
+          <h3>Fundamentos de Firma Electrónica</h3>
+          <p>PKI, FEA, FES, Ley 19.799, diferencias técnicas y valor legal.</p>
+        </div>
+      </div>
+      <div class="module-card" onclick="navigate('portfolio')">
+        <div class="module-icon-wrap">📦</div>
+        <div>
+          <h3>Portafolio de Productos</h3>
+          <p>Todos los productos ecert: descripción, diferenciadores y cuándo usarlos.</p>
+        </div>
+      </div>
+      <div class="module-card" onclick="navigate('fao-un-uso')">
+        <div class="module-icon-wrap">✍️</div>
+        <div>
+          <h3>FAO/FES 1 Uso</h3>
+          <p>Flujo completo, endpoints, parámetros críticos y manejo de errores.</p>
+        </div>
+      </div>
+      <div class="module-card" onclick="navigate('fao-enrolada')">
+        <div class="module-icon-wrap">🔑</div>
+        <div>
+          <h3>FAO/FES Enrolada + Workflow</h3>
+          <p>Firma controlada, desatendida, estados del workflow y lógica de negocio.</p>
+        </div>
+      </div>
+      <div class="module-card" onclick="navigate('portal-empresa')">
+        <div class="module-icon-wrap">🏢</div>
+        <div>
+          <h3>Portal Empresa</h3>
+          <p>Flujo libre, flujo predefinido, modelo padre-hijo y módulos del portal.</p>
+        </div>
+      </div>
+      <div class="module-card" onclick="navigate('quiz')">
+        <div class="module-icon-wrap">🎯</div>
+        <div>
+          <h3>Quiz de Certificación</h3>
+          <p>Valida tu conocimiento con preguntas técnicas reales de nivel CS.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FUNDAMENTOS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-fundamentos" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🔐 Módulo 1</div>
+        <h2>Firma Electrónica: Fundamentos</h2>
+        <p class="section-desc">Marco legal, conceptos técnicos y diferencias entre modalidades. Esto es lo que cada persona en CS debe entender antes de hablar con un cliente.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <h3 class="sub">¿Qué es la Firma Electrónica?</h3>
+    <p class="body">Una firma electrónica es cualquier mecanismo técnico que permite vincular una persona a un documento digital con el objetivo de demostrar su intención de suscribirlo. La Ley 19.799 de Chile regula dos categorías con consecuencias legales y técnicas completamente distintas.</p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th>FES — Firma Electrónica Simple</th>
+            <th>FEA / FAO — Firma Avanzada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Definición legal</td>
+            <td>Cualquier mecanismo que identifica al firmante</td>
+            <td>Certificado PKI emitido por PSC acreditado por Minecon</td>
+          </tr>
+          <tr>
+            <td>Valor probatorio</td>
+            <td>Limitado — requiere evidencias adicionales</td>
+            <td>Equivalente al manuscrito (Art. 3 Ley 19.799)</td>
+          </tr>
+          <tr>
+            <td>Autenticación requerida</td>
+            <td>OTP, desafío preguntas, cédula</td>
+            <td>Biometría dactilar, facial, ClaveÚnica + HSM</td>
+          </tr>
+          <tr>
+            <td>Certificado digital</td>
+            <td class="cross">✗</td>
+            <td class="check">✓ (X.509 emitido por ecert CA)</td>
+          </tr>
+          <tr>
+            <td>No repudio técnico</td>
+            <td>Parcial</td>
+            <td>Completo — matemáticamente demostrable</td>
+          </tr>
+          <tr>
+            <td>Acreditación Minecon</td>
+            <td class="cross">✗</td>
+            <td class="check">✓ RAE-317, RAE-3779, RAE-3919</td>
+          </tr>
+          <tr>
+            <td>Casos de uso típicos</td>
+            <td>Contratos laborales, anexos internos, onboarding</td>
+            <td>Mandatos financieros, traspasos AFP, pagarés</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">💡</span>
+      <div><strong>Key CS takeaway:</strong> Cuando un cliente pregunta "¿en qué se diferencia la firma simple de la avanzada?", la respuesta no es técnica — es legal y de riesgo. La FEA elimina el repudio y equivale a una firma manuscrita ante tribunales. La FES requiere construir un expediente de evidencias para probar la intención del firmante.</div>
+    </div>
+
+    <h3 class="sub">Infraestructura de Clave Pública (PKI)</h3>
+    <p class="body">La Firma Electrónica Avanzada de ecert está sustentada en una Infraestructura PKI acreditada. Entender este concepto permite al equipo CS explicar por qué ecert tiene un valor diferencial frente a soluciones de firma simple o servicios no acreditados.</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">🔑</div>
+        <div class="info-card-title">Par de Claves Asimétricas</div>
+        <div class="info-card-body">Clave privada (solo el firmante la posee, nunca sale del HSM) y clave pública (verificable por cualquiera). La firma se crea con la privada y se verifica con la pública.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📜</div>
+        <div class="info-card-title">Certificado Digital X.509</div>
+        <div class="info-card-body">Documento digital emitido por ecert que asocia la clave pública a la identidad verificada del firmante. Contiene RUT, nombre, fecha de expiración y firma de la CA.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🏛️</div>
+        <div class="info-card-title">CA Acreditada (ecert)</div>
+        <div class="info-card-body">ecert es una Autoridad Certificadora acreditada por el Ministerio de Economía de Chile. Esta acreditación le da validez legal plena a los certificados emitidos.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔒</div>
+        <div class="info-card-title">HSM (Hardware Security Module)</div>
+        <div class="info-card-body">Dispositivo físico certificado donde se generan y custodian las claves criptográficas. Nunca es posible exportar la clave privada del HSM.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Modalidades de Firma en ecert</h3>
+    <p class="body">ecert implementa múltiples modalidades de firma que cubren diferentes casos de uso, niveles de seguridad y experiencias de usuario. Comprender cuándo recomendar cada una es fundamental para el equipo CS.</p>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">✍️ FAO 1 Uso (Firma Avanzada Online de un solo uso)</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>El firmante genera un certificado digital temporal, válido solo para esa transacción. No requiere que el usuario tenga cuenta previa en ecert. El proceso incluye validación de identidad (cédula, OTP, biometría) y genera el certificado en tiempo real durante el proceso de firma.</p>
+          <div class="callout success" style="margin-top:12px">
+            <span class="callout-icon">✅</span>
+            <div><strong>Ideal para:</strong> Onboarding de clientes, contratos con terceros externos, mandatos PAC (ePAC), pagarés, traspasos AFP.</div>
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🔑 FAO Enrolada (Firma Avanzada con certificado pre-generado)</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>El firmante crea su certificado digital de forma anticipada en el Portal Empresa (proceso de enrolamiento). Luego puede firmar múltiples documentos de forma ágil, sin repetir el proceso de validación de identidad cada vez. Soporta dos sub-modalidades: Firma Controlada (usuario presente e interactivo) y Firma Desatendida (firma automatizada sin intervención del usuario).</p>
+          <div class="callout success" style="margin-top:12px">
+            <span class="callout-icon">✅</span>
+            <div><strong>Ideal para:</strong> Equipos de RRHH que firman masivamente, ejecutivos que firman decenas de documentos al día, flujos internos corporativos.</div>
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">📝 FES (Firma Electrónica Simple)</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>No genera certificado X.509. La autenticación del firmante se realiza mediante OTP SMS/email, desafío de preguntas o validación de cédula. ecert genera evidencias técnicas (hash del documento, logs de acceso, dirección IP, timestamp) que sirven como prueba de intención del firmante.</p>
+          <div class="callout warning" style="margin-top:12px">
+            <span class="callout-icon">⚠️</span>
+            <div><strong>Importante para CS:</strong> La FES tiene menor valor probatorio autónomo. Se recomienda complementar con custodia de evidencias. No es adecuada para mandatos financieros ni documentos que requieren equivalencia manuscrita.</div>
+          </div>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🖐️ FBE — Firma Biométrica Electrónica (presencial)</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>Modalidad presencial que usa un kit físico: lector de cédula + lector biométrico dactilar. El ejecutivo de atención registra la cédula del cliente y este coloca su huella dactilar. ecert valida contra el Registro Civil, comprueba biometría y firma el documento en tiempo real. Clasificada como FEA por su nivel de verificación de identidad.</p>
+          <div class="callout success" style="margin-top:12px">
+            <span class="callout-icon">✅</span>
+            <div><strong>Ideal para:</strong> Sucursales bancarias, agencias AFP, consultorios de salud, retail financiero con atención presencial.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PORTFOLIO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-portfolio" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">📦 Módulo 2</div>
+        <h2>Portafolio de Productos ecert</h2>
+        <p class="section-desc">Vista completa de todas las soluciones del catálogo, sus diferenciadores y cuándo recomendar cada una a un cliente.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~25 min</span></div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-magenta">✍️</div>
+          <div>
+            <div class="product-title">FAO/FES 1 Uso</div>
+            <div class="product-version">XT-DES-0019 v2.9</div>
+          </div>
+        </div>
+        <div class="product-desc">Firma electrónica sin enrolamiento previo. El firmante genera un certificado temporal durante el proceso. Soporta hasta 25 documentos por preinscripción. PDF máx. 300 KB.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">FAO</span>
+          <span class="tag tag-cyan">FES</span>
+          <span class="tag tag-teal">API REST</span>
+          <span class="tag tag-navy">Portal a Portal</span>
+          <span class="badge badge-new">v2.9</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-cyan">🔑</div>
+          <div>
+            <div class="product-title">FAO/FES Enrolada + Workflow</div>
+            <div class="product-version">XT-DES-0021 v2.8</div>
+          </div>
+        </div>
+        <div class="product-desc">Firma con certificado pre-generado (enrolado). Soporta flujos secuenciales y simultáneos, firma controlada, firma desatendida y XML. Modelo padre-hijo para partners.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Enrolada</span>
+          <span class="tag tag-cyan">Workflow</span>
+          <span class="tag tag-teal">Desatendida</span>
+          <span class="tag tag-navy">Partners</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-teal">🏢</div>
+          <div>
+            <div class="product-title">Portal Empresa</div>
+            <div class="product-version">Módulo Web</div>
+          </div>
+        </div>
+        <div class="product-desc">Portal web omnicanal para gestionar flujos de firma sin integración de API. Incluye Flujo Libre, Flujo Predefinido, Mis Documentos, Mis Contactos, Habilitar Firmas y Automatizar Firmas.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Sin código</span>
+          <span class="tag tag-cyan">Omnicanal</span>
+          <span class="tag tag-teal">Flujos</span>
+          <span class="tag tag-gray">Dashboard</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-navy">🪪</div>
+          <div>
+            <div class="product-title">Verificación de Identidad</div>
+            <div class="product-version">XT-DES-0059 v1.8</div>
+          </div>
+        </div>
+        <div class="product-desc">API standalone para validar identidad. Consulta Registro Civil (IndicadorBloqueo), verifica vigencia de cédula, estado de fallecimiento. Retorna NOBLOQUEADO, TEMPORAL, DEFINITIVO.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Reg. Civil</span>
+          <span class="tag tag-cyan">KYC</span>
+          <span class="tag tag-teal">OTP SMS</span>
+          <span class="tag tag-navy">Desafío</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-magenta">👁️</div>
+          <div>
+            <div class="product-title">Biometría Facial</div>
+            <div class="product-version">FaceTec · v3.0</div>
+          </div>
+        </div>
+        <div class="product-desc">Verificación facial con prueba de vida 3D (liveness), OCR de cédula, match facial vs foto Registro Civil. Control de duplicados en tiempo real y listas negras configurables.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">FaceTec</span>
+          <span class="tag tag-cyan">OCR</span>
+          <span class="tag tag-teal">Liveness 3D</span>
+          <span class="tag tag-navy">KYC</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-cyan">🏦</div>
+          <div>
+            <div class="product-title">ePAC 2.0</div>
+            <div class="product-version">XT-DES-0063 v2.4</div>
+          </div>
+        </div>
+        <div class="product-desc">Mandatos de pago automático (PAC) firmados digitalmente con FAO de 1 uso. Integración formal con CCA y bancos. Activación en línea (Security, Itaú, BICE) o en 24h (otros bancos).</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Financiero</span>
+          <span class="tag tag-cyan">CCA</span>
+          <span class="tag tag-teal">PAC</span>
+          <span class="tag tag-gray">Cobro recurrente</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-teal">🗄️</div>
+          <div>
+            <div class="product-title">Custodia 2.0</div>
+            <div class="product-version">Manual integración</div>
+          </div>
+        </div>
+        <div class="product-desc">Almacenamiento seguro de documentos firmados con evidencias técnicas. ElasticSearch para filtros avanzados y analítica en tiempo real. Reportería y dashboards integrados.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Evidencias</span>
+          <span class="tag tag-cyan">ElasticSearch</span>
+          <span class="tag tag-teal">Reportes</span>
+          <span class="tag tag-gray">6 años</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-navy">⏱️</div>
+          <div>
+            <div class="product-title">Sellado de Tiempo (TSA)</div>
+            <div class="product-version">RFC 3161</div>
+          </div>
+        </div>
+        <div class="product-desc">Sello de tiempo emitido por ecert (acreditado) que garantiza que un documento existía en un momento preciso y no ha sido modificado. Endpoint REST síncrono. Autenticación por APIkey en header.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">RFC 3161</span>
+          <span class="tag tag-cyan">Base64</span>
+          <span class="tag tag-teal">Acreditado</span>
+          <span class="tag tag-gray">Tiempo real</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-magenta">📊</div>
+          <div>
+            <div class="product-title">Previred · Infocotizaciones</div>
+            <div class="product-version">Operador certificado</div>
+          </div>
+        </div>
+        <div class="product-desc">Operador certificado por Previred. Permite consultar infocotizaciones previsionales con FAO de 1 uso (verificación de identidad + firma de disclaimer). Flujo de traspasos AFP integrado.</div>
+        <div class="product-tags">
+          <span class="tag tag-magenta">Previred</span>
+          <span class="tag tag-cyan">AFP</span>
+          <span class="tag tag-teal">FAO</span>
+          <span class="tag tag-navy">Previsional</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout critical">
+      <span class="callout-icon">🎯</span>
+      <div><strong>Para el equipo CS:</strong> El portafolio de ecert cubre todo el espectro de la firma electrónica y la identidad digital. La diferenciación frente a DocuSign o Adobe Sign no es solo técnica — es la acreditación Minecon, la integración con Registro Civil chileno, el ecosistema financiero (Previred, CCA, AFP) y la residencia local de datos en Chile.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- INFRAESTRUCTURA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-infraestructura" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🏗️ Módulo 3</div>
+        <h2>Arquitectura e Infraestructura</h2>
+        <p class="section-desc">La base técnica de ecert: microservicios, alta disponibilidad, seguridad y continuidad operacional.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">Modelo Arquitectónico</h3>
+    <p class="body">La plataforma ecert está construida sobre una arquitectura de microservicios con separación estricta de capas funcionales. Cada servicio tiene responsabilidades acotadas, lo que permite escalar, desplegar y mantener de forma independiente.</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">⚡</div>
+        <div class="info-card-title">Alta Disponibilidad</div>
+        <div class="info-card-body">Clústeres Activo-Activo y Activo-Pasivo según criticidad. BD en clúster de 3 nodos. Failover automático con circuit breaker y graceful degradation.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📈</div>
+        <div class="info-card-title">Escalabilidad Horizontal</div>
+        <div class="info-card-body">Los servicios se replican dinámicamente ante incrementos de demanda sin rediseño arquitectónico. Balanceo de carga multinivel: L4 (red), L7 (aplicación) y base de datos.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🛡️</div>
+        <div class="info-card-title">Seguridad por Diseño</div>
+        <div class="info-card-body">Cifrado end-to-end, control de acceso por mínimo privilegio, FIREWALL WAF (Imperva), antivirus (Fortinet, Cisco), SIEM-Wazuh para detección proactiva de amenazas.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <div class="info-card-title">Residencia Local de Datos</div>
+        <div class="info-card-body">Data center On-Premise en Chile. Los datos no salen del territorio nacional, cumpliendo requerimientos de compliance y soberanía de datos de clientes regulados.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔄</div>
+        <div class="info-card-title">Continuidad Operacional</div>
+        <div class="info-card-body">Replicación de máquinas virtuales entre Data Centers con conmutación automática en caso de interrupción. VPN site-to-site para transmisión segura con clientes.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔭</div>
+        <div class="info-card-title">Observabilidad Continua</div>
+        <div class="info-card-body">Métricas, trazas y logs centralizados con alertas proactivas. CI/CD automatizado con ambientes progresivos (QA, productivo) y reversión automática ante fallos.</div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">🏦</span>
+      <div><strong>Argumento para clientes regulados:</strong> ecert opera en Data Center con residencia local en Chile, infraestructura certificada para servicios de misión crítica con alta disponibilidad, redundancia, control de accesos físicos y lógicos, y monitoreo continuo 24/7. Cumple los requerimientos de la CMF, SBS (Perú) y normativas sectoriales de salud y AFP.</div>
+    </div>
+
+    <h3 class="sub">Ambientes de Integración</h3>
+    <div class="highlight-box gradient-teal">
+      <h4>🧪 Ambiente de Pruebas (QA)</h4>
+      <ul>
+        <li>Disponible durante todo el proyecto sin costo adicional</li>
+        <li>No usa HSM real — emulación de software (no apto para pruebas de carga)</li>
+        <li>No tiene compromiso de Uptime — no se debe usar para SLA de producción</li>
+        <li>No es de uso exclusivo del cliente</li>
+        <li>Toda actividad debe coordinarse previamente con el área de Operaciones ecert</li>
+      </ul>
+    </div>
+    <div class="highlight-box gradient-magenta">
+      <h4>🚀 Ambiente de Producción</h4>
+      <ul>
+        <li>HSM físico certificado — certificados con validez legal plena</li>
+        <li>SLA de disponibilidad comprometido (coordinar con Comercial)</li>
+        <li>Monitoreo SOC 24/7 con SIEM-Wazuh</li>
+        <li>Credenciales entregadas formalmente tras firma de contrato</li>
+        <li>Cambios y nuevas funciones siempre pasan por QA antes de producción</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FAO UN USO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-fao-un-uso" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">✍️ Módulo 4</div>
+        <h2>FAO/FES de 1 Uso — Integración completa</h2>
+        <p class="section-desc">El producto más utilizado de ecert. Flujo completo, endpoints, parámetros críticos y errores comunes que el equipo CS debe dominar.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~30 min</span></div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Cambios v2.9 (crítico para CS):</strong> El campo <code>CaducaEnHoras</code> fue eliminado del endpoint <code>SubirDocumento</code> y movido a <code>Preinscripción</code>. Clientes con integraciones antiguas deben actualizar. Máximo 25 documentos por preinscripción (nuevo límite). Nuevo endpoint de <code>Motor de Firma Simple LATAM</code>.</div>
+    </div>
+
+    <h3 class="sub">Flujo de Integración: Portal a Portal</h3>
+    <p class="body">La modalidad Portal a Portal es la más común. El sistema del cliente redirige al usuario al portal de ecert para el proceso de firma, y recibe el documento firmado vía Webhook.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Autenticación → Bearer Token</div>
+          <div class="step-body">El sistema del cliente llama a <strong>POST {URL}/Login/Authenticate</strong> con credenciales de empresa. Recibe un Bearer Token que debe incluirse en el header <code>Authorization</code> de todos los siguientes llamados.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Preinscripción → IdUsuarioECert + UrlLoginECert</div>
+          <div class="step-body">Llamada a <strong>POST {URL}/Integracion/PreInscripcion</strong>. Se define RUT del firmante, tipo de firma (3=FAO 1uso, 4=FES 1uso), UrlWebHook, UrlCallback, y desde v2.9 el campo <code>CaducaEnHoras</code>. Retorna <code>IdUsuarioECert</code> y <code>UrlLoginECert</code>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Subir Documento(s) → DocumentoId</div>
+          <div class="step-body">Llamada a <strong>POST {URL}/Integracion/SubirDocumento</strong>. Se envía el PDF en Base64 (máx. 300 KB, o 100 KB para FAO Enrolada), nombre del documento, posición de firma y el <code>IdUsuarioECert</code>. Se puede subir hasta 25 documentos asociados a una misma preinscripción.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Redirigir usuario a UrlLoginECert</div>
+          <div class="step-body">El portal del cliente redirige al usuario a la URL retornada en el paso 2. Allí ecert conduce el proceso completo: visualización del documento, validación de identidad, firma. Cambio de contexto gestionado por ecert.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Recepción vía Webhook o Callback</div>
+          <div class="step-body">Una vez que el usuario firma (o rechaza), ecert hace un POST al <code>UrlWebHook</code> con el documento firmado en Base64. El usuario es redirigido a <code>UrlCallback</code>. En caso de error, el webhook reintenta con el esquema: 5min → 10min → 15min → 1h → 1h30min.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Parámetros Críticos — Preinscripción</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Campo</th><th>Tipo</th><th>Req.</th><th>Descripción</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>RutUsuario</code></td><td>String</td><td class="td-req">✓</td><td>RUT del firmante sin puntos, con guión</td></tr>
+          <tr><td><code>TipoFirma</code></td><td>Int</td><td class="td-req">✓</td><td>3=FAO 1uso · 4=FES 1uso (¡diferente a enrolada!)</td></tr>
+          <tr><td><code>UrlWebHook</code></td><td>String</td><td class="td-req">✓</td><td>URL del cliente para recibir documentos firmados</td></tr>
+          <tr><td><code>UrlCallback</code></td><td>String</td><td class="td-opt">Opt</td><td>URL de retorno al portal del cliente tras la firma</td></tr>
+          <tr><td><code>CaducaEnHoras</code></td><td>Int</td><td class="td-opt">Opt</td><td><span class="badge badge-new">v2.9</span> Movido desde SubirDocumento. Tiempo de expiración de la preinscripción en horas.</td></tr>
+          <tr><td><code>RutSponsor</code></td><td>String</td><td class="td-opt">Opt</td><td>Solo para modelo de partners (empresa patrocinadora)</td></tr>
+          <tr><td><code>Celular</code></td><td>String</td><td class="td-opt">Opt</td><td>Número celular del firmante para OTP SMS (si el producto lo requiere)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout critical">
+      <span class="callout-icon">🚨</span>
+      <div><strong>TipoFirma: valor crítico.</strong> En FAO/FES 1 Uso: 3=FAO, 4=FES. En FAO/FES Enrolada: 1=FAO, 2=FES. Este es uno de los errores más comunes en integraciones nuevas. Si el cliente reporta errores de "tipo de firma inválido", verificar que use los valores correctos para su producto.</div>
+    </div>
+
+    <h3 class="sub">Respuesta Webhook — Estructura</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JSON · Webhook POST UrlWebHook</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre><span class="cmt">// Documento firmado exitosamente</span>
+{
+  <span class="key">"DoctoId"</span>: <span class="num">1</span>,
+  <span class="key">"DoctoBase64"</span>: <span class="str">"JVBERi0xLjQK..."</span>,
+  <span class="key">"Firmado"</span>: <span class="kw">true</span>,
+  <span class="key">"RazonRechazo"</span>: <span class="kw">null</span>
+}
+
+<span class="cmt">// Documento rechazado por el firmante</span>
+{
+  <span class="key">"DoctoId"</span>: <span class="num">1</span>,
+  <span class="key">"DoctoBase64"</span>: <span class="kw">null</span>,
+  <span class="key">"Firmado"</span>: <span class="kw">false</span>,
+  <span class="key">"RazonRechazo"</span>: <span class="str">"No estoy de acuerdo con los términos"</span>
+}</pre>
+    </div>
+
+    <h3 class="sub">Reintentos del Webhook</h3>
+    <p class="body">Si el servidor del cliente no responde (o retorna error 5xx), ecert reintenta automáticamente según este esquema:</p>
+
+    <div style="overflow-x:auto">
+      <div class="retry-timeline" style="min-width:400px;padding:16px 0">
+        <div class="retry-wrap">
+          <div class="retry-dot">📨</div>
+          <div class="retry-label">Intento<br>inicial</div>
+        </div>
+        <div class="retry-line"></div>
+        <div class="retry-wrap">
+          <div class="retry-dot">1</div>
+          <div class="retry-label">+5 min</div>
+        </div>
+        <div class="retry-line"></div>
+        <div class="retry-wrap">
+          <div class="retry-dot">2</div>
+          <div class="retry-label">+10 min</div>
+        </div>
+        <div class="retry-line"></div>
+        <div class="retry-wrap">
+          <div class="retry-dot">3</div>
+          <div class="retry-label">+15 min</div>
+        </div>
+        <div class="retry-line"></div>
+        <div class="retry-wrap">
+          <div class="retry-dot">4</div>
+          <div class="retry-label">+1 hora</div>
+        </div>
+        <div class="retry-line"></div>
+        <div class="retry-wrap">
+          <div class="retry-dot">5</div>
+          <div class="retry-label">+1h 30min</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Para clientes con problemas de Webhook:</strong> Si el cliente reporta que no recibe el documento firmado, verificar: (1) ¿El endpoint del webhook es público y accesible desde internet? (2) ¿Responde con HTTP 200 dentro del timeout? (3) ¿Hay un firewall bloqueando las IPs de ecert? Si el webhook sigue fallando tras los 5 reintentos, el documento permanece en ecert y se puede consultar vía API de trazabilidad.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FAO ENROLADA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-fao-enrolada" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🔑 Módulo 5</div>
+        <h2>FAO/FES Enrolada + Workflow</h2>
+        <p class="section-desc">Firma con certificado pre-generado. Firma controlada vs desatendida, estados del workflow, modelo de partners.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~25 min</span></div>
+    </div>
+
+    <h3 class="sub">Prerrequisitos para Firma Enrolada</h3>
+    <div class="highlight-box gradient-teal">
+      <h4>✅ Condiciones obligatorias antes de llamar la API</h4>
+      <ul>
+        <li>La empresa debe tener acceso al API Gestor (credenciales activas)</li>
+        <li>El usuario firmante debe tener cuenta creada en el Portal Empresa</li>
+        <li>El usuario debe haber generado su certificado digital (proceso de enrolamiento)</li>
+        <li>El usuario debe tener habilitada su firma Controlada en el Portal</li>
+        <li>Para firma desatendida: el usuario debe haber activado la automatización de firmas</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">Firma Controlada vs Desatendida</h3>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Criterio</th><th>Firma Controlada</th><th>Firma Desatendida</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>¿Usuario presente?</td><td>✅ Sí — confirma cada firma</td><td>❌ No — firma automática</td></tr>
+          <tr><td>Endpoint API</td><td>FirmarPDFControlada</td><td>Integración automatizada</td></tr>
+          <tr><td>Confirmación activa</td><td>Usuario aprueba en portal</td><td>Automatizado sin interacción</td></tr>
+          <tr><td>Caso de uso típico</td><td>Ejecutivo revisa y firma</td><td>Facturación masiva, RRHH</td></tr>
+          <tr><td>Posición de firma</td><td>Configurable (coordenadas)</td><td>Configurable (coordenadas)</td></tr>
+          <tr><td>Requiere activación previa</td><td>Firma Controlada en portal</td><td>Automatizar Firmas en portal</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Estados del Workflow</h3>
+    <p class="body">Al usar el módulo de Workflow, el sistema mantiene estados para el proceso, los documentos y los firmantes. El equipo CS debe conocer estos estados para diagnosticar tickets de clientes.</p>
+
+    <div class="pill-tabs" id="workflowTabs">
+      <div class="pill-tab active" onclick="switchTab('workflowTabs','tab-proceso')">Estado Proceso</div>
+      <div class="pill-tab" onclick="switchTab('workflowTabs','tab-documento')">Estado Documento</div>
+      <div class="pill-tab" onclick="switchTab('workflowTabs','tab-firmante')">Estado Firmante</div>
+    </div>
+
+    <div id="tab-proceso" class="tab-content active">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Estado</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>Creado</code></td><td>Proceso creado pero no iniciado. Los documentos aún no se han enviado a firmar.</td></tr>
+            <tr><td><code>Iniciado</code></td><td>El proceso está en ejecución activa. Al menos un firmante está pendiente.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-documento" class="tab-content">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Estado</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><code>No Iniciado</code></td><td>Documento creado pero aún no en proceso de firma.</td></tr>
+            <tr><td><code>En Proceso</code></td><td>Al menos un firmante está pendiente de firmar este documento.</td></tr>
+            <tr><td><code>Finalizado</code></td><td>Todos los firmantes han firmado el documento.</td></tr>
+            <tr><td><code>Custodiado</code></td><td>Documento enviado a custodia tras firma completa.</td></tr>
+            <tr><td><code>Caducado</code></td><td>El documento expiró por tiempo (TiempoLimite del workflow).</td></tr>
+            <tr><td><code>Cancelado</code></td><td>El proceso fue cancelado manualmente o por regla de negocio.</td></tr>
+            <tr><td><code>Eliminado</code></td><td>Documento eliminado del sistema.</td></tr>
+            <tr><td><code>Desconocido</code></td><td>Estado no reconocido — contactar soporte ecert.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-firmante" class="tab-content">
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        <div>El endpoint <strong>GET /Workflow/ObtenerEstadoWorkflowProceso?preinscripcion={id}</strong> retorna el estado del proceso completo incluyendo documentos y firmantes. Usar el <code>IdPreinscripcion</code> obtenido en el paso de Preinscripción.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Modelo Empresa Padre-Hijo (Partners)</h3>
+    <p class="body">El modelo padre-hijo permite a una empresa patrocinadora (empresa padre / partner) gestionar firma en nombre de múltiples empresas clientes (empresas hijo). El parámetro <code>RutSponsor</code> en la API identifica este modelo.</p>
+
+    <div class="callout info">
+      <span class="callout-icon">🏢</span>
+      <div><strong>Caso de uso:</strong> Una integradora o consultoría que implementa firmas para múltiples clientes puede operar como empresa padre. Las empresas hijo se benefician de la integración sin necesidad de desarrollar su propio conector ecert.</div>
+    </div>
+
+    <h3 class="sub">Endpoint: Firmar PDF Controlada</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JSON · POST {URL}/Integracion/FirmarPDFControlada</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre>{
+  <span class="key">"RutEmpresa"</span>: <span class="str">"12345678-9"</span>,
+  <span class="key">"RutUsuario"</span>: <span class="str">"17563038-4"</span>,
+  <span class="key">"TipoFirma"</span>: <span class="num">1</span>,          <span class="cmt">// 1=FAO Avanzada, 2=FES Simple</span>
+  <span class="key">"FirmaVisible"</span>: <span class="kw">true</span>,
+  <span class="key">"PosicionFirma"</span>: <span class="num">4</span>,       <span class="cmt">// 3=Inf. izquierda, 4=Inf. derecha</span>
+  <span class="key">"DocPDF"</span>: <span class="str">"JVBERi0xLjQK..."</span>,   <span class="cmt">// Base64 del PDF</span>
+  <span class="key">"PosicionFirmaX"</span>: <span class="num">0.0</span>,
+  <span class="key">"PosicionFirmaY"</span>: <span class="num">0.0</span>,
+  <span class="key">"PosicionFirmaPagina"</span>: <span class="num">0</span>
+}</pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PORTAL EMPRESA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-portal-empresa" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🏢 Módulo 6</div>
+        <h2>Portal Empresa</h2>
+        <p class="section-desc">La interfaz web de ecert para gestión de firmas sin necesidad de integración de API. Seis módulos, dos tipos de flujos, y lógica de accesos.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <h3 class="sub">Los 6 Módulos del Portal</h3>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📄</div>
+        <div class="info-card-title">1. Mis Documentos</div>
+        <div class="info-card-body">Dashboard principal. Muestra todos los documentos pendientes, en proceso y finalizados. Filtros por estado, tipo de firma, fecha y firmante. Exportación a Excel.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📤</div>
+        <div class="info-card-title">2. Enviar Documentos</div>
+        <div class="info-card-body">Inicio de nuevos procesos de firma. Se carga el PDF y se configura quién firma, en qué orden y con qué tipo de firma. Soporta Flujo Libre y Flujo Predefinido.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">👥</div>
+        <div class="info-card-title">3. Mis Contactos</div>
+        <div class="info-card-body">Directorio de firmantes frecuentes. Permite pre-cargar RUT, nombre, email y celular para agilizar el envío de documentos recurrentes.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔏</div>
+        <div class="info-card-title">4. Habilitar Firmas</div>
+        <div class="info-card-body">Proceso de enrolamiento del usuario. Aquí el firmante genera su certificado digital de firma avanzada. Incluye validación de identidad y creación de contraseña de firma.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⚡</div>
+        <div class="info-card-title">5. Automatizar Firmas</div>
+        <div class="info-card-body">Habilita la firma desatendida. El usuario configura su firma controlada para que sea ejecutada automáticamente por la API sin intervención manual.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">✒️</div>
+        <div class="info-card-title">6. Mis Firmas</div>
+        <div class="info-card-body">Personalización de la representación visual de la firma: imagen, dibujo manuscrito o logo de empresa. Esta imagen aparece en el PDF firmado.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Flujo Libre vs Flujo Predefinido</h3>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Criterio</th><th>Flujo Libre</th><th>Flujo Predefinido</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Configuración</td><td>Firmantes se agregan manualmente al enviar</td><td>Plantilla de firmantes pre-configurada por admin</td></tr>
+          <tr><td>Flexibilidad</td><td>Alta — cualquier firmante ad hoc</td><td>Controlada — firmantes definidos o con "comodines"</td></tr>
+          <tr><td>Firmantes fijos</td><td class="cross">✗</td><td class="check">✓ pre-cargados e inamovibles</td></tr>
+          <tr><td>Firmantes libres</td><td class="check">✓ todos</td><td class="check">✓ posiciones específicas configurables</td></tr>
+          <tr><td>Productos combinados</td><td>Solo estándar</td><td>Firma simple certificada + Cédula + SMS</td></tr>
+          <tr><td>Uso típico</td><td>Documentos ad hoc, contratos únicos</td><td>Procesos estandarizados, RRHH masivo</td></tr>
+          <tr><td>Configuración por API</td><td class="partial">Parcial</td><td class="check">✓ FlujoId en Preinscripción</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">💡</span>
+      <div><strong>Key CS:</strong> Cuando un cliente quiere estandarizar su proceso de firma (p.ej.: "siempre firma primero el gerente, luego el empleado"), recomendar Flujo Predefinido. Cuando los firmantes cambian cada vez, recomendar Flujo Libre. Para automatización API con firmantes dinámicos, el <code>FlujoId</code> en la Preinscripción habilita el flujo predefinido vía API.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- VERIFICACION IDENTIDAD -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-identidad" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🪪 Módulo 7</div>
+        <h2>Verificación de Identidad</h2>
+        <p class="section-desc">API standalone XT-DES-0059. Modalidades de verificación, IndicadorBloqueo y lógica de negocio que el cliente debe implementar.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <h3 class="sub">Modalidades de Verificación</h3>
+    <p class="body">ecert ofrece múltiples factores de verificación de identidad, clasificados en tres categorías clásicas de autenticación:</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">💳</div>
+        <div class="info-card-title">Lo que el usuario TIENE</div>
+        <div class="info-card-body">Cédula de Identidad (Registro Civil), OTP SMS, OTP Email. La cédula consulta en tiempo real el Registro Civil para verificar vigencia y estado de bloqueo.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🧠</div>
+        <div class="info-card-title">Lo que el usuario SABE</div>
+        <div class="info-card-body">Desafío de preguntas (Knowledge Based Authentication). Preguntas sobre historial crediticio, laboral o personal del usuario, generadas dinámicamente.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">👤</div>
+        <div class="info-card-title">Lo que el usuario ES</div>
+        <div class="info-card-body">Biometría dactilar (presencial con kit) o biometría facial (remota con FaceTec). Comparación contra datos del Registro Civil para máxima certeza de identidad.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">IndicadorBloqueo — Valores y Significado</h3>
+    <p class="body">La API XT-DES-0059 retorna el campo <code>IndicadorBloqueo</code> que indica el estado de la cédula del ciudadano en el Registro Civil:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Valor IndicadorBloqueo</th><th>Significado</th><th>Recomendación CS</th></tr></thead>
+        <tbody>
+          <tr><td><code>NOBLOQUEADO</code></td><td>Cédula vigente, sin bloqueo</td><td>Proceso puede continuar normalmente</td></tr>
+          <tr><td><code>TEMPORAL</code></td><td>Bloqueo temporal (denuncia extravío)</td><td>No proceder con firma — informar al cliente</td></tr>
+          <tr><td><code>DEFINITIVO</code></td><td>Cédula definitivamente cancelada</td><td>Rechazar proceso — riesgo de fraude</td></tr>
+          <tr><td><code>TEMPORAL PERMANENTE</code></td><td>Bloqueo temporal de naturaleza permanente</td><td>Tratar como DEFINITIVO hasta aclaración</td></tr>
+          <tr><td><code>CREACIÓN/RENOVACIÓN</code></td><td>CI en proceso de emisión o renovación</td><td>Solicitar al firmante esperar o usar método alternativo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Importante para clientes:</strong> ecert retorna el <code>IndicadorBloqueo</code> como dato técnico. La lógica de negocio (qué hacer con cada valor) es responsabilidad del cliente. El Portal Empresa muestra bloqueo binario (bloqueado/no bloqueado) sin revelar la razón específica al usuario final. Para obtener el detalle granular, se debe usar XT-DES-0059 en el backend del cliente.</div>
+    </div>
+
+    <h3 class="sub">Campos adicionales del retorno</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>Vigencia</code></td><td>Indica si la cédula está vigente (no expirada). Campo independiente de IndicadorBloqueo.</td></tr>
+          <tr><td><code>Difunto</code></td><td>Flag que indica si el RUT corresponde a una persona fallecida según Registro Civil.</td></tr>
+          <tr><td><code>VerificationIdentityStatus</code></td><td>XT-DES-0068: 0=Pendiente, 1=Fallido, 2=Aprobado</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- BIOMETRIA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-biometria" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">👁️ Módulo 8</div>
+        <h2>Biometría Facial — FaceTec</h2>
+        <p class="section-desc">Integración de verificación facial con prueba de vida 3D, OCR de cédula y control de duplicados.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <h3 class="sub">Capacidades de la Solución Facial</h3>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-magenta">📸</div>
+          <div><div class="product-title">OCR Cédula de Identidad</div></div>
+        </div>
+        <div class="product-desc">Extracción automática de datos del anverso y reverso de la cédula. Validación de consistencia entre ambas caras. Detección de cédulas fotocopiadas, falsas o digitales.</div>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-cyan">🎭</div>
+          <div><div class="product-title">Prueba de Vida (Liveness)</div></div>
+        </div>
+        <div class="product-desc">Tecnología FaceTec 3D. Detecta intentos de suplantación con fotos, videos o máscaras. El usuario debe realizar una secuencia de movimientos que el sistema analiza en tiempo real.</div>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-teal">🔍</div>
+          <div><div class="product-title">Match Facial vs Registro Civil</div></div>
+        </div>
+        <div class="product-desc">Comparación del rostro capturado contra la foto 2D o 3D del Registro Civil. Alta precisión con tolerancia configurable. Integración directa con la base de datos biométrica oficial.</div>
+      </div>
+      <div class="product-card">
+        <div class="product-header">
+          <div class="product-icon icon-navy">⚠️</div>
+          <div><div class="product-title">Control de Duplicados</div></div>
+        </div>
+        <div class="product-desc">Detección en tiempo real de intentos de usar el mismo rostro con múltiples RUTs o cuentas. Listas negras configurables por organización para bloqueo de identidades específicas.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Flujo de Integración API — Milestones</h3>
+    <p class="body">La API de Biometría Facial expone un endpoint de Milestones que permite rastrear el avance del proceso paso a paso:</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JSON · GET [URL_BASE]/instance/[ak-instance]/milestone</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre>{
+  <span class="key">"data"</span>: [
+    {
+      <span class="key">"type"</span>: <span class="str">"DESKTOP"</span>,
+      <span class="key">"success"</span>: <span class="kw">true</span>,
+      <span class="key">"status"</span>: <span class="str">"OPEN"</span>,
+      <span class="key">"executed_at"</span>: <span class="num">1758036330498</span>
+    },
+    {
+      <span class="key">"type"</span>: <span class="str">"START"</span>,
+      <span class="key">"success"</span>: <span class="kw">true</span>,
+      <span class="key">"status"</span>: <span class="str">"COMPLETED"</span>,
+      <span class="key">"executed_at"</span>: <span class="num">1758036345000</span>
+    }
+  ]
+}</pre>
+    </div>
+
+    <h3 class="sub">Códigos de Error Comunes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Código</th><th>Descripción</th><th>Acción recomendada</th></tr></thead>
+        <tbody>
+          <tr><td>438</td><td>Se agotaron los reintentos de captura facial</td><td>Pedir al usuario repetir el proceso en mejores condiciones de luz</td></tr>
+          <tr><td>439</td><td>Cédula bloqueada (Reg. Civil)</td><td>No continuar — verificar IndicadorBloqueo</td></tr>
+          <tr><td>440</td><td>Fallecido (Reg. Civil)</td><td>Rechazar proceso — alerta de fraude</td></tr>
+          <tr><td>441</td><td>Email en formato incorrecto</td><td>Validar formato antes de enviar</td></tr>
+          <tr><td>443</td><td>OTP rechazado</td><td>El usuario ingresó código incorrecto — puede reintentar</td></tr>
+          <tr><td>444</td><td>RUT diferente al de la instancia</td><td>Error de integración — el RUT no coincide con la sesión iniciada</td></tr>
+          <tr><td>445</td><td>Rechazo de firma de documentos</td><td>El usuario rechazó activamente la firma</td></tr>
+          <tr><td>446</td><td>PDF con problemas</td><td>Verificar que el PDF sea válido y no esté encriptado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Webhook de Biometría</h3>
+    <p class="body">La API de biometría soporta webhook configurable a nivel de organización. Se ejecuta al finalizar una instancia o en cambios de estados intermedios. El webhook solo entrega el ID de la instancia; el detalle completo se obtiene consultando la API de Status.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JSON · Webhook Biometría (POST)</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre>{
+  <span class="key">"instances"</span>: [<span class="str">"XXXXXXX"</span>]
+}
+<span class="cmt">// Array de IDs de instancia que gatillan el evento.
+// Llamar a GET /instance/{id}/status para obtener detalles.</span></pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- EPAC -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-epac" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🏦 Módulo 9</div>
+        <h2>ePAC 2.0 — Mandatos de Pago Automático</h2>
+        <p class="section-desc">Emisión digital de mandatos PAC con FAO de 1 uso. Integración formal con CCA y ecosistema bancario chileno.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">¿Cómo funciona ePAC?</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Cliente activa el mandato PAC</div>
+          <div class="step-body">El cliente final (ej.: socio de cooperativa) accede al formulario web. Ingresa RUT, banco, tipo y número de cuenta. Se valida automáticamente contra los registros de la CCA en tiempo real.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Generación y firma del mandato digital</div>
+          <div class="step-body">Se genera el PDF del mandato. El cliente firma con FAO de 1 uso (con ClaveÚnica y doble factor de autenticación). El mandato firmado se envía al cliente, a la empresa recaudadora y a la CCA simultáneamente.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Activación del mandato</div>
+          <div class="step-body">Bancos con integración en línea activan inmediatamente: Security, Itaú, BICE. Los demás bancos activan en 24-48 horas. Banco de Chile, Santander, BCI, Consorcio, Scotiabank, BancoEstado, Falabella, Internacional también suscritos.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Requisitos para Habilitar ePAC</h3>
+    <div class="highlight-box gradient-magenta">
+      <h4>📋 Checklist de onboarding ePAC (cliente nuevo)</h4>
+      <ul>
+        <li>Contrato de servicio PAC vigente entre el comercio y su banco concentrador</li>
+        <li>Código de Convenio ePAC entregado por el banco concentrador</li>
+        <li>Plantilla de mandato ePAC (acordada entre comercio y banco, entregada a ecert)</li>
+        <li>Datos de prueba completos: RUT firmante, cuenta corriente, banco debitador, código de convenio, código de servicio</li>
+        <li>Desarrollo de la integración con la API de ecert ePAC</li>
+      </ul>
+    </div>
+
+    <div class="callout critical">
+      <span class="callout-icon">⚡</span>
+      <div><strong>Diferenciador vs Webscraping:</strong> ePAC usa integración formal con bancos a través de CCA — legal, seguro y cumple normativas. El webscraping implica robo automatizado de credenciales bancarias, exposición legal y es rechazado por la mayoría de bancos corporativos. Para clientes que mencionan "ya estamos usando webscraping", este es el argumento de migración.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CUSTODIA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-custodia" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🗄️ Módulo 10</div>
+        <h2>Custodia 2.0</h2>
+        <p class="section-desc">Almacenamiento seguro de documentos firmados con evidencias técnicas, ElasticSearch y analítica en tiempo real.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">¿Qué es la Custodia en el contexto de ecert?</h3>
+    <p class="body">La Custodia 2.0 es el repositorio seguro donde ecert almacena los documentos firmados junto con su expediente de evidencias técnicas completo. No es un gestor documental genérico — es un sistema de preservación legal orientado a sostener el valor probatorio de los documentos firmados a lo largo del tiempo.</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📋</div>
+        <div class="info-card-title">Expediente de Evidencias</div>
+        <div class="info-card-body">Por cada documento: hash criptográfico, timestamp, IP del firmante, logs de sesión, tipo de autenticación usada, y resultado de validaciones de identidad.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔍</div>
+        <div class="info-card-title">Búsqueda ElasticSearch</div>
+        <div class="info-card-body">Filtros avanzados por RUT, fecha, tipo de documento, estado, empresa firmante. Búsquedas en tiempo real sobre millones de documentos almacenados.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📊</div>
+        <div class="info-card-title">Dashboards y Reportería</div>
+        <div class="info-card-body">Visualización y análisis de datos en tiempo real. Generación de reportes personalizados por período, tipo de firma, departamento o cliente.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">⏰</div>
+        <div class="info-card-title">Retención Legal</div>
+        <div class="info-card-body">Los documentos se custodian por el período legalmente requerido. Para infocotizaciones Previred: 6 años. Configurable según requerimientos del cliente.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Activación Automática desde Firma</h3>
+    <p class="body">En la versión v2.7.1 de XT-DES-0019, se incorporó el campo <code>RequiereCustodia</code> en el endpoint <code>SubirDocumento</code>. Al activarlo, el documento se envía automáticamente a Custodia tras completar la firma, sin que el cliente deba hacer una llamada adicional.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">JSON · SubirDocumento con custodia automática</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre>{
+  <span class="key">"RutUsuario"</span>: <span class="str">"17563038-4"</span>,
+  <span class="key">"IdUsuarioECert"</span>: <span class="num">123</span>,
+  <span class="key">"NombreDocumento"</span>: <span class="str">"Contrato RRHH 2026"</span>,
+  <span class="key">"DocumentoBase64"</span>: <span class="str">"JVBERi0xLjQK..."</span>,
+  <span class="key">"RequiereCustodia"</span>: <span class="kw">true</span>  <span class="cmt">// ← v2.7.1 · custodia automática</span>
+}</pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- TSA -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-tsa" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">⏱️ Módulo 11</div>
+        <h2>Sellado de Tiempo (TSA)</h2>
+        <p class="section-desc">Sello RFC 3161 acreditado. Garantía de existencia e integridad de documentos en un instante preciso.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~10 min</span></div>
+    </div>
+
+    <h3 class="sub">¿Qué garantiza el sellado de tiempo?</h3>
+    <p class="body">El TSA (Time Stamping Authority) de ecert emite un sello criptográfico que vincula el hash de un documento a una fecha y hora exacta, registrada por una entidad de confianza acreditada. Esto garantiza dos cosas de forma irrefutable:</p>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📅</div>
+        <div class="info-card-title">Existencia temporal</div>
+        <div class="info-card-body">El documento existía exactamente en el momento indicado por el sello. No se puede backdating (antedatar) fraudulentamente.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔒</div>
+        <div class="info-card-title">Integridad posterior</div>
+        <div class="info-card-body">El documento no ha sido modificado desde el momento del sellado. Cualquier alteración posterior invalida el sello criptográfico.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Integración API</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">API · POST {{Url}}/Beta/api/timestamp</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre><span class="cmt">// Headers requeridos:</span>
+Authorization: APIkey {api_key_entregada_por_ecert}
+Content-Type: application/json
+
+<span class="cmt">// Body:</span>
+{
+  <span class="key">"DocumentoBase64"</span>: <span class="str">"JVBERi0xLjQK..."</span>
+}
+
+<span class="cmt">// Response:</span>
+{
+  <span class="key">"DocumentoSellado"</span>: <span class="str">"JVBERi0xLjQK..."</span>  <span class="cmt">// PDF con sello incrustado</span>
+}</pre>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-icon">✅</span>
+      <div><strong>Caso de uso frecuente:</strong> Empresas de auditoría, licitaciones públicas, sector notarial y procesos judiciales requieren que los documentos tengan fecha y hora certificada por una TSA acreditada. ecert es la única PSC en Chile acreditada para emitir sellos de tiempo con validez legal plena según Ley 19.799.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- WEBHOOK -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-webhook" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🔔 Módulo 12</div>
+        <h2>Webhooks y Trazabilidad</h2>
+        <p class="section-desc">Notificaciones en tiempo real, reintentos automáticos, API de trazabilidad y D1D2D3.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">Sistema de Notificación Webhook</h3>
+    <p class="body">ecert usa webhooks para notificar eventos asíncronos al sistema del cliente. El modelo es push — ecert hace un POST al endpoint configurado por el cliente cuando se produce un evento.</p>
+
+    <div class="highlight-box gradient-teal">
+      <h4>🔔 Eventos que disparan webhook</h4>
+      <ul>
+        <li>Firma de documento completada por usuario final</li>
+        <li>Rechazo de documento por usuario final</li>
+        <li>Cambio de estado en workflow (por firmante)</li>
+        <li>Finalización de proceso de enrolamiento de usuario</li>
+        <li>Finalización de mandato ePAC (CCA notifica a ecert, ecert notifica cliente)</li>
+        <li>Finalización de instancia de biometría facial</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">Flag D1D2D3 — Control de notificación</h3>
+    <p class="body">El campo <code>TiposEnviosDocumentosFirmados</code> en los webhooks FAO/FES usa un sistema de flags para controlar qué documentos se incluyen en la notificación:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Flag</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>D1</code></td><td>Documento firmado enviado al firmante (usuario final)</td></tr>
+          <tr><td><code>D2</code></td><td>Documento firmado enviado al solicitante (empresa cliente de ecert)</td></tr>
+          <tr><td><code>D3</code></td><td>Documento firmado entregado vía Webhook al sistema integrado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">API de Trazabilidad</h3>
+    <p class="body">La API de Trazabilidad permite consultar el historial completo de eventos de una transacción. Es fundamental para diagnosticar problemas en integraciones de clientes.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">API · GET /api/Reporte/DetalleTrazabilidadPorTransaccion</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre><span class="url">GET /api/Reporte/DetalleTrazabilidadPorTransaccion?IdTransaccion=fa5f8398-0838-4028-bb2b-0e1800cad1dc</span>
+
+<span class="cmt">// Compatible con:
+// - Solicitud de Traspaso AFP con FAO
+// - Solicitud de Infocotizaciones con FAO
+// - Solicitud de Mandato con FAO
+// Retorna: historial completo de eventos con timestamps</span></pre>
+    </div>
+
+    <h3 class="sub">Canal WhatsApp <span class="badge badge-new">v2.8</span></h3>
+    <div class="callout info">
+      <span class="callout-icon">📱</span>
+      <div><strong>Nuevo en v2.8:</strong> Soporte para canal WhatsApp en notificaciones OTP y envío de links de firma. Los clientes pueden configurar el envío del link de firma por WhatsApp en lugar de (o adicionalmente a) email y SMS. Esto mejora significativamente las tasas de conversión en procesos de onboarding digital.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- INTEGRACION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-integracion" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">⚙️ Módulo 13</div>
+        <h2>Guía de Integración API</h2>
+        <p class="section-desc">Patrón de autenticación, estructura de respuestas, manejo de errores y mejores prácticas.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <h3 class="sub">Autenticación — Bearer Token</h3>
+    <p class="body">Todas las APIs de ecert usan autenticación Bearer Token. El token se obtiene en el primer llamado y debe incluirse en el header <code>Authorization</code> de todos los siguientes.</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">API · Authenticate — Obtener Token</span>
+        <button class="code-copy" onclick="copyCode(this)">📋 Copiar</button>
+      </div>
+      <pre><span class="url">POST {URL}/Login/Authenticate</span>
+
+<span class="cmt">// Body:</span>
+{
+  <span class="key">"RutEmpresa"</span>: <span class="str">"12345678-9"</span>,
+  <span class="key">"Clave"</span>: <span class="str">"contraseña_empresa"</span>
+}
+
+<span class="cmt">// Response exitoso:</span>
+{
+  <span class="key">"Exito"</span>: <span class="kw">true</span>,
+  <span class="key">"Excepcion"</span>: <span class="kw">false</span>,
+  <span class="key">"Descripcion"</span>: <span class="str">"Token generado con éxito"</span>,
+  <span class="key">"ObjetoGenerico"</span>: {
+    <span class="key">"Token"</span>: <span class="str">"ayJhgFRTGfdswEERTghjku…"</span>
+  }
+}
+
+<span class="cmt">// Uso en siguientes llamados:
+// Header: Authorization: Bearer ayJhgFRTGfdswEERTghjku…</span></pre>
+    </div>
+
+    <h3 class="sub">Estructura Estándar de Respuesta</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>Exito</code></td><td>Boolean</td><td>true si la operación fue exitosa</td></tr>
+          <tr><td><code>Excepcion</code></td><td>Boolean</td><td>true si ocurrió un error de excepción técnica</td></tr>
+          <tr><td><code>Descripcion</code></td><td>String</td><td>Mensaje descriptivo del resultado</td></tr>
+          <tr><td><code>ListaGenerica</code></td><td>Array|null</td><td>Lista de resultados cuando aplica</td></tr>
+          <tr><td><code>ObjetoGenerico</code></td><td>Object|null</td><td>Objeto de respuesta específico del método</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Mejores Prácticas para Integraciones</h3>
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">⚡ Rate Limiting y Buenas Prácticas de Llamadas</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>Es importante mantener controlada la cantidad de llamadas hacia la API. El cliente debe implementar validación previa antes de llamar a endpoints de firma para mantener el buen uso del servicio y la continuidad operativa. No hacer polling agresivo — usar webhooks para notificaciones asíncronas.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">📏 Límites Técnicos Críticos</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>PDF máximo: 300 KB para FAO/FES 1 Uso · 100 KB para FAO Enrolada. Máximo 25 documentos por preinscripción (desde v2.3). Nombre de documento: máximo 200 caracteres (30 para nombre del firmante). Formato de RUT: sin puntos, con guión (ej: 17563038-4).</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🔗 Validación de Firma de Documentos</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>Los documentos firmados por ecert pueden validarse en: <strong>https://api.ecertchile.cl/WebSignValidator/public/signature-validator</strong> — o desde ecert.cl → Verificación y Ayuda → Validez. Esta URL es útil para compartir con clientes que necesitan verificar la validez de firmas recibidas.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🔌 Integración VPN Site-to-Site</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p>Para clientes con requerimientos de seguridad elevados (banca, salud, gobierno), ecert soporta VPN site-to-site para transmisión segura entre el data center del cliente y la plataforma ecert. Las credenciales de integración no viajan por internet abierto. Coordinar con el equipo técnico de ecert para configuración.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PREVIRED -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-previred" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">📊 Módulo 14A</div>
+        <h2>Previred · Infocotizaciones y Traspasos AFP</h2>
+        <p class="section-desc">ecert como operador certificado Previred. Flujo de infocotizaciones y traspasos AFP con verificación de identidad FAO.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">Posicionamiento como Operador Certificado</h3>
+    <div class="callout critical">
+      <span class="callout-icon">🏆</span>
+      <div><strong>Diferenciador clave:</strong> ecert es operador certificado por Previred. Esto significa que está autorizado formalmente para consultar infocotizaciones previsionales y gestionar traspasos AFP con plena validez legal. Las AFP e instituciones que requieran acceder a datos Previred deben trabajar con operadores certificados como ecert.</div>
+    </div>
+
+    <h3 class="sub">Flujo Infocotizaciones con FAO</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Autenticación y solicitud de infocotizaciones</div>
+          <div class="step-body">El sistema del cliente llama a <strong>POST /api/IntegracionValidacionIdentidad/Infocotizaciones</strong>. Recibe una URL de validación de identidad y un ID de transacción (TRX).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Validación de identidad del afiliado</div>
+          <div class="step-body">El usuario realiza el proceso de validación de identidad en la plataforma ecert. Al completarlo, firma digitalmente el disclaimer de autorización (FEA). Esto genera evidencia con validez legal de que el afiliado autorizó la consulta de sus datos.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Obtención del Token TVI y Disclaimer firmado</div>
+          <div class="step-body">El sistema llama a <strong>GET /api/IntegracionValidacionIdentidad/Infocotizaciones</strong> con el ID de transacción. Recibe el disclaimer firmado con FEA y el Token TVI autorizado.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Consulta a Previred con Token TVI</div>
+          <div class="step-body">El sistema envía el Token TVI a Previred. Previred valida el token y entrega las infocotizaciones del afiliado. La evidencia (disclaimer firmado + traza) se custodia por 6 años.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- HASH -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-hash" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">#️⃣ Módulo 14B</div>
+        <h2>Firma Basada en Hash</h2>
+        <p class="section-desc">Alternativa para clientes que no pueden compartir el PDF completo. El cliente envía el hash del documento en lugar del documento.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <h3 class="sub">¿Cuándo usar firma basada en Hash?</h3>
+    <p class="body">La firma basada en Hash es una alternativa al flujo estándar en la que el cliente no envía el PDF a ecert, sino únicamente el hash SHA-256 del documento. ecert firma el hash y retorna la firma digital. El cliente incrusta esa firma en su documento original.</p>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Criterio</th><th>Firma PDF Standard</th><th>Firma Hash</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Documento en tránsito</td><td>PDF completo a ecert</td><td>Solo hash SHA-256 (32 bytes)</td></tr>
+          <tr><td>Privacidad del contenido</td><td>ecert ve el contenido</td><td>ecert NUNCA ve el contenido</td></tr>
+          <tr><td>Ancho de banda</td><td>Mayor (hasta 300 KB por doc)</td><td>Mínimo (hash = 64 chars hex)</td></tr>
+          <tr><td>Volúmenes altos</td><td>Más lento a escala</td><td>Ideal para millones de docs</td></tr>
+          <tr><td>Complejidad de integración</td><td>Simple</td><td>Mayor (cliente gestiona PDF)</td></tr>
+          <tr><td>Caso de uso típico</td><td>Estándar B2B</td><td>Banca, salud, gobierno (datos sensibles)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">🏦</span>
+      <div><strong>Uso en sector financiero:</strong> Bancos y aseguradoras frecuentemente usan firma basada en hash porque sus documentos pueden contener datos sensibles protegidos por regulación. El hash es matemáticamente irreversible — no es posible reconstruir el documento desde el hash.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FLUJOS POR CASO DE USO -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-flujos-uso" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🗺️ CS Toolkit</div>
+        <h2>Flujos por Caso de Uso</h2>
+        <p class="section-desc">Guía de referencia rápida: dado el caso de uso del cliente, ¿qué producto ecert recomendar y por qué?</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🏦 Fintech / Banco: Mandato de débito automático</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> ePAC 2.0</p>
+          <p><strong>Flujo:</strong> Cliente llena formulario → ecert genera mandato PDF → cliente firma con FAO 1 Uso → mandato enviado a CCA → banco activa en 24h (o en línea)</p>
+          <p><strong>Requisito clave:</strong> Cliente debe tener convenio PAC vigente con su banco concentrador y código de convenio ePAC</p>
+          <p><strong>Diferenciador ecert:</strong> Única alternativa legal y auditada frente al webscraping. Integración formal con CCA y todos los bancos principales.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🏥 Isapre / AFP: Traspaso y consulta previsional</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> Previred · Infocotizaciones + FAO 1 Uso</p>
+          <p><strong>Flujo:</strong> Afiliado valida identidad → firma disclaimer FAO → sistema obtiene token TVI → consulta infocotizaciones en Previred</p>
+          <p><strong>Diferenciador ecert:</strong> Operador certificado Previred. Custodia de evidencias por 6 años para auditoría regulatoria.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">👷 RRHH / Empresa: Contratos laborales masivos</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> FAO Enrolada + Portal Empresa (Flujo Predefinido)</p>
+          <p><strong>Flujo:</strong> Empleados enrolados en portal → RRHH sube contratos → flujo predefinido envía para firma → firma desatendida o controlada según perfil</p>
+          <p><strong>Diferenciador:</strong> Sin fricción para el firmante (ya tiene certificado). Alta velocidad de firma. Dashboard con estado de todos los contratos en tiempo real.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🏥 Salud / Isapres: Onboarding digital de afiliados</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> FAO/FES 1 Uso + Biometría Facial + Custodia</p>
+          <p><strong>Flujo:</strong> Afiliado inicia proceso online → validación de identidad (cédula + liveness facial + OTP) → firma solicitud con FAO → documentos custodian en ecert</p>
+          <p><strong>Diferenciador:</strong> KYC completo sin presencia física. Cumple CMF. Expediente de evidencias robusto para auditoría.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🏛️ Gobierno / Sector Público: Documentos con fecha certificada</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> FEA (FAO) + Sello de Tiempo TSA</p>
+          <p><strong>Flujo:</strong> Funcionario firma el acto administrativo con FAO → sello TSA se añade al documento → evidencia irrefutable de fecha/hora de emisión</p>
+          <p><strong>Diferenciador:</strong> ecert es TSA acreditada por Minecon. El sello tiene validez jurídica plena. Cumple Ley 19.799 y normativas de Gobierno Digital.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">🎓 Educación: Matrículas y títulos digitales</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución para contratos:</strong> FES 1 Uso (menor costo, suficiente para contratos educacionales)</p>
+          <p><strong>Solución para pagarés/mandatos:</strong> FAO 1 Uso obligatorio (requiere no repudio)</p>
+          <p><strong>Solución para títulos:</strong> FAO enrolada + firma desatendida masiva del rector/decano</p>
+          <p><strong>Diferenciador:</strong> Automatización masiva de emisión de títulos (miles por período académico) sin intervención manual del firmante autorizado.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">⛏️ Minería / Industrial: Contratos con terceros externos</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Solución:</strong> FAO/FES 1 Uso (firmantes externos sin cuenta previa)</p>
+          <p><strong>Flujo:</strong> Empresa genera contrato → sistema envía link de firma por email/SMS/WhatsApp → contratista firma desde cualquier dispositivo → documento retorna vía webhook</p>
+          <p><strong>Diferenciador:</strong> Sin instalaciones en el cliente. Firma desde móvil. WhatsApp disponible desde v2.8 para mayor tasa de conversión.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- OBJECIONES -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-objeciones" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">💬 CS Toolkit</div>
+        <h2>Manejo de Objeciones Técnicas</h2>
+        <p class="section-desc">Las objeciones más frecuentes de clientes técnicos y cómo responderlas con argumentos basados en evidencia.</p>
+      </div>
+      <div class="reading-time">⏱ <span>~20 min</span></div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "DocuSign es más conocido, ¿por qué ecert?"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Respuesta:</strong> DocuSign opera bajo legislación de EE.UU. y Europa. Sus firmas no son equivalentes a la Firma Electrónica Avanzada de la Ley 19.799 chilena, lo que implica menor valor probatorio ante tribunales chilenos. ecert es una CA acreditada por el Ministerio de Economía de Chile (RAE-317, RAE-3779, RAE-3919), los datos residen en Chile, y tiene integración directa con Registro Civil, Previred, CCA y el ecosistema financiero local. Para procesos regulados (CMF, SVS, SBS), solo una PSC acreditada localmente cumple los requerimientos.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "¿Qué pasa si ecert se cae?"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Respuesta:</strong> ecert opera con arquitectura de alta disponibilidad: clústeres Activo-Activo y Activo-Pasivo, BD en 3 nodos, replicación entre Data Centers con failover automático, monitoreo SOC 24/7 con SIEM-Wazuh. Los Data Centers están certificados para servicios de misión crítica con redundancia física y lógica. El SLA de producción está definido contractualmente. Adicionalmente, en caso de contingencia, los documentos firmados permanecen en custodia con integridad garantizada.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "Los límites de tamaño de PDF (300 KB) son muy restrictivos"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Respuesta:</strong> El límite existe por diseño para garantizar tiempos de respuesta óptimos en el proceso de firma (especialmente en móviles). La solución es compresión del PDF antes de enviarlo a ecert — esto es práctica estándar en integraciones de firma. Para FAO Enrolada el límite es 100 KB porque el proceso es desatendido y debe ser ultra-ágil. Podemos ayudar al cliente a implementar la compresión con librerías estándar. Para documentos que genuinamente superan este límite (planos, documentos con imágenes), la modalidad Hash es la alternativa — el cliente firma el hash sin enviar el PDF.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "No recibimos el webhook / el documento firmado no llega"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Diagnóstico paso a paso:</strong></p>
+          <p>1. Verificar que el endpoint del webhook sea accesible públicamente desde internet (no localhost, no detrás de VPN sin excepción)</p>
+          <p>2. Verificar que el endpoint retorne HTTP 200 dentro del timeout (no HTTP 201, no 204 — debe ser 200)</p>
+          <p>3. Verificar logs del servidor para confirmar si llegaron los reintentos (5min, 10min, 15min, 1h, 1h30min)</p>
+          <p>4. Si hay firewall, solicitar al equipo de infraestructura que permita tráfico desde las IPs de producción de ecert</p>
+          <p>5. Consultar la API de Trazabilidad para verificar si la firma se completó exitosamente aunque el webhook haya fallado</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "¿Los datos de nuestros clientes salen de Chile?"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Respuesta:</strong> No. ecert opera con Data Center On-Premise con residencia estricta en Chile. Los documentos, datos de firmantes y expedientes de evidencias nunca salen del territorio nacional. Esto cumple los requerimientos de la CMF, de la Ley 19.628 de Protección de Datos Personales (y su futura reforma), y las exigencias de soberanía de datos de clientes del sector financiero, salud y gobierno. Adicionalmente, las conexiones entre el cliente y ecert se pueden establecer sobre VPN site-to-site para máxima seguridad en tránsito.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <span class="acc-title">❓ "Necesitamos pruebas de carga antes de salir a producción"</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <p><strong>Respuesta:</strong> El ambiente de pruebas (QA) de ecert no está dimensionado para pruebas de carga y no tiene el mismo rendimiento que producción. Las pruebas de carga formales deben coordinarse directamente con el equipo de Operaciones de ecert para realizarlas en un ambiente con las condiciones adecuadas, fuera del horario de producción y con previo aviso para habilitar los recursos necesarios. Las actividades de prueba deben coordinarse previamente — no hacer pruebas de carga sin aviso previo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- QUIZ -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="section-quiz" class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">🎯 Certificación</div>
+        <h2>Quiz de Certificación CS</h2>
+        <p class="section-desc">15 preguntas técnicas reales. Se necesita 80% para certificarse. Responde con cuidado — algunas opciones son "casi correctas".</p>
+      </div>
+      <div class="reading-time">⏱ <span>~15 min</span></div>
+    </div>
+
+    <div class="quiz-section">
+      <div class="quiz-title">🎯 Evaluación Técnica — Nivel Customer Success</div>
+      <div class="quiz-subtitle">Responde cada pregunta. Al seleccionar verás si es correcta.</div>
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="quiz-q">1. En FAO/FES de 1 Uso (XT-DES-0019 v2.9), ¿qué valores toma el campo <code>TipoFirma</code>?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q1')">1 = FAO · 2 = FES</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q1')">3 = FAO · 4 = FES</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q1')">1 = Simple · 2 = Avanzada</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q1')">A = FAO · B = FES</div>
+        </div>
+        <div id="fb-q1" class="quiz-feedback">En 1 Uso: 3=FAO (Avanzada), 4=FES (Simple). En Enrolada es diferente: 1=FAO, 2=FES. Este es uno de los errores más comunes.</div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="quiz-q">2. Un cliente reporta que "el documento firmado nunca llega al webhook". Ya confirmaste que la firma se completó exitosamente. ¿Cuál es el primer paso de diagnóstico?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q2')">Pedir al cliente que realice la firma nuevamente</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q2')">Crear un ticket de incidente urgente a ecert</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q2')">Verificar que el endpoint del webhook sea accesible públicamente y retorne HTTP 200</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q2')">Verificar el ambiente de pruebas vs producción</div>
+        </div>
+        <div id="fb-q2" class="quiz-feedback">El primer diagnóstico es siempre verificar accesibilidad del endpoint y que retorne HTTP 200. El webhook reintenta 5 veces: 5min, 10min, 15min, 1h, 1h30min.</div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="quiz-q">3. ¿Cuál es el tamaño máximo de PDF para FAO de 1 Uso?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q3')">100 KB</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q3')">300 KB</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q3')">1 MB</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q3')">500 KB</div>
+        </div>
+        <div id="fb-q3" class="quiz-feedback">300 KB para FAO/FES 1 Uso. Solo 100 KB para FAO Enrolada. Son límites distintos — el límite más restrictivo aplica a enrolada porque el proceso es desatendido.</div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="quiz-q">4. Un cliente de una cooperativa quiere cobrar automáticamente a sus socios cada mes desde su cuenta corriente. ¿Qué producto de ecert recomiendas?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q4')">FAO 1 Uso directo</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q4')">Portal Empresa con Flujo Libre</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q4')">ePAC 2.0</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q4')">Custodia 2.0 con FAO Enrolada</div>
+        </div>
+        <div id="fb-q4" class="quiz-feedback">ePAC 2.0 es el producto específico para mandatos PAC digitales. Usa FAO 1 Uso internamente, pero el flujo está integrado con CCA y los bancos del ecosistema.</div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="quiz-q">5. El campo <code>IndicadorBloqueo</code> de la API XT-DES-0059 retorna "TEMPORAL". ¿Qué significa y qué debes recomendar al cliente?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q5')">La cédula está vigente, continuar con el proceso</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q5')">Bloqueo temporal (ej.: denuncia de extravío) — no proceder con la firma</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q5')">El Registro Civil está temporalmente sin servicio</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q5')">Error de timeout en la consulta al Registro Civil</div>
+        </div>
+        <div id="fb-q5" class="quiz-feedback">TEMPORAL indica bloqueo de la CI por denuncia de extravío u otras causas temporales. No se debe proceder con la firma. La lógica de negocio (qué mostrar al usuario) es responsabilidad del cliente.</div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="quiz-q">6. En la v2.9 de XT-DES-0019, ¿cuántos documentos máximo pueden enviarse en una sola preinscripción?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q6')">10 documentos</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q6')">50 documentos</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q6')">25 documentos</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q6')">Sin límite</div>
+        </div>
+        <div id="fb-q6" class="quiz-feedback">Desde la v2.3, el límite es 25 documentos por preinscripción. Este límite fue incorporado para proteger la experiencia del firmante y la estabilidad del proceso.</div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="quiz-q">7. Un ejecutivo de RRHH quiere firmar 200 contratos de forma automática, sin tener que presionar "firmar" en cada uno. ¿Qué modalidad de firma de ecert es la correcta?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q7')">FAO 1 Uso con redirección portal a portal</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q7')">Firma Controlada del Portal Empresa</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q7')">Firma Desatendida con FAO Enrolada (FirmarPDFControlada automatizada)</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q7')">FBE presencial con kit biométrico</div>
+        </div>
+        <div id="fb-q7" class="quiz-feedback">La firma desatendida con FAO Enrolada permite a un usuario con firma automatizada habilitada firmar masivamente via API sin intervención manual. Requiere previo enrolamiento y activación de "Automatizar Firmas" en el portal.</div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="quiz-q">8. ¿Cuál es la diferencia fundamental entre FES y FAO en términos de valor probatorio?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q8')">FAO es más cara, FES es más barata</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q8')">FAO equivale a firma manuscrita por ley (Art. 3 Ley 19.799); FES requiere construir un expediente adicional de evidencias</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q8')">FES es más segura técnicamente que FAO</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q8')">No hay diferencia legal, solo técnica</div>
+        </div>
+        <div id="fb-q8" class="quiz-feedback">La FAO tiene equivalencia jurídica con la firma manuscrita por el Art. 3 de la Ley 19.799. La FES puede tener menos valor probatorio autónomo y requiere un expediente de evidencias para sostenerse ante tribunales.</div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="quiz-question">
+        <div class="quiz-q">9. Un cliente dice: "Necesitamos que los datos de nuestros afiliados no salgan de Chile". ¿Qué argumento usas?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q9')">Los datos salen a AWS pero en región us-east-1</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q9')">Depende del tipo de firma que contraten</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q9')">ecert opera en Data Center On-Premise en Chile con residencia local de datos — nunca salen del territorio nacional</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q9')">Los datos se sincronizan con el cliente en tiempo real</div>
+        </div>
+        <div id="fb-q9" class="quiz-feedback">ecert opera con residencia estricta de datos en Chile, con infraestructura On-Premise. No usa cloud pública para los datos de firmantes. Esto es diferenciador frente a proveedores internacionales como DocuSign o Adobe.</div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="quiz-question">
+        <div class="quiz-q">10. ¿Cuál es el esquema de reintentos del Webhook en FAO/FES 1 Uso?</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="answer(this, false, 'q10')">3 reintentos en 1, 2 y 5 minutos</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q10')">10 reintentos cada 10 minutos</div>
+          <div class="quiz-option" onclick="answer(this, true, 'q10')">5 reintentos: 5min → 10min → 15min → 1h → 1h30min</div>
+          <div class="quiz-option" onclick="answer(this, false, 'q10')">1 solo reintento después de 30 minutos</div>
+        </div>
+        <div id="fb-q10" class="quiz-feedback">El webhook reintenta exactamente 5 veces con el esquema: 5min, 10min, 15min, 1h, 1h30min. ecert guarda la fecha exacta de entrega y la respuesta recibida por el webhook del cliente.</div>
+      </div>
+
+    </div>
+
+    <div id="quiz-result" style="display:none; background:white; border:1px solid var(--border); border-radius:12px; padding:28px; margin-top:20px; text-align:center;">
+      <div style="font-size:48px; margin-bottom:12px" id="quiz-emoji">🎯</div>
+      <div style="font-size:22px; font-weight:900; color:var(--navy); margin-bottom:8px" id="quiz-score-text">--</div>
+      <div style="font-size:14px; color:var(--muted)" id="quiz-detail-text">--</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+  // Navigation
+  const navItems = document.querySelectorAll('.nav-item[data-target]');
+  const sections = document.querySelectorAll('.section, .hero');
+  const totalSections = navItems.length;
+  const visited = new Set();
+
+  const sectionOrder = Array.from(navItems).map(n => n.dataset.target);
+
+  function navigate(target) {
+    // deactivate all
+    navItems.forEach(n => n.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+
+    // activate target
+    const nav = document.querySelector(`.nav-item[data-target="${target}"]`);
+    const section = document.getElementById(`section-${target}`);
+    if (nav) nav.classList.add('active');
+    if (section) section.classList.add('active');
+
+    // update breadcrumb
+    const bc = document.getElementById('breadcrumbCurrent');
+    if (nav) bc.textContent = nav.textContent.trim().replace(/\s+/g, ' ');
+
+    visited.add(target);
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // close mobile sidebar
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
+  function navigateRelative(dir) {
+    const current = document.querySelector('.nav-item.active');
+    if (!current) return;
+    const idx = sectionOrder.indexOf(current.dataset.target);
+    const newIdx = idx + dir;
+    if (newIdx >= 0 && newIdx < sectionOrder.length) {
+      navigate(sectionOrder[newIdx]);
+    }
+  }
+
+  function updateProgress() {
+    const pct = Math.round((visited.size / totalSections) * 100);
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => navigate(item.dataset.target));
+  });
+
+  // Accordion
+  function toggleAcc(header) {
+    const item = header.closest('.acc-item');
+    item.classList.toggle('open');
+  }
+
+  // Tabs
+  function switchTab(groupId, tabId) {
+    const group = document.getElementById(groupId);
+    const allTabs = group.querySelectorAll('.pill-tab');
+    const allContents = document.querySelectorAll(`#${groupId} ~ .tab-content, .tab-content`);
+
+    allTabs.forEach(t => t.classList.remove('active'));
+    const clickedTab = event.target;
+    clickedTab.classList.add('active');
+
+    document.querySelectorAll('.tab-content').forEach(c => {
+      if (c.id === tabId) c.classList.add('active');
+      else {
+        const ids = ['tab-proceso', 'tab-documento', 'tab-firmante'];
+        if (ids.includes(c.id)) c.classList.remove('active');
+      }
+    });
+  }
+
+  // Quiz
+  let quizAnswers = {};
+
+  function answer(el, isCorrect, qId) {
+    if (quizAnswers[qId] !== undefined) return;
+    quizAnswers[qId] = isCorrect;
+
+    const options = el.closest('.quiz-options').querySelectorAll('.quiz-option');
+    options.forEach(opt => {
+      opt.style.pointerEvents = 'none';
+      if (opt === el) {
+        opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+      }
+    });
+
+    const fb = document.getElementById(`fb-${qId}`);
+    if (fb) {
+      fb.classList.add('show', isCorrect ? 'good' : 'bad');
+    }
+
+    // Check if all answered
+    const totalQ = 10;
+    if (Object.keys(quizAnswers).length === totalQ) {
+      showQuizResult();
+    }
+  }
+
+  function showQuizResult() {
+    const correct = Object.values(quizAnswers).filter(Boolean).length;
+    const total = Object.keys(quizAnswers).length;
+    const pct = Math.round((correct / total) * 100);
+
+    const resultEl = document.getElementById('quiz-result');
+    resultEl.style.display = 'block';
+
+    const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '📚' : '🔄';
+    const text = pct >= 80 ? `¡Certificado! ${correct}/${total} correctas (${pct}%)` : `${correct}/${total} correctas (${pct}%) — Necesitas 80% para certificarte`;
+    const detail = pct >= 80 ? 'Dominas los conceptos técnicos de ecert. Estás listo para atender a clientes con profundidad.' : 'Repasa los módulos de los temas donde tuviste dificultades y vuelve a intentarlo.';
+
+    document.getElementById('quiz-emoji').textContent = emoji;
+    document.getElementById('quiz-score-text').textContent = text;
+    document.getElementById('quiz-detail-text').textContent = detail;
+
+    resultEl.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Search
+  const searchInput = document.getElementById('searchInput');
+
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    if (!q) {
+      navItems.forEach(n => n.style.display = '');
+      document.querySelectorAll('.nav-section-label').forEach(l => l.style.display = '');
+      return;
+    }
+    navItems.forEach(n => {
+      const match = n.textContent.toLowerCase().includes(q);
+      n.style.display = match ? '' : 'none';
+    });
+  });
+
+  // Keyboard shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+    if (e.key === 'Escape') {
+      searchInput.blur();
+      searchInput.value = '';
+      navItems.forEach(n => n.style.display = '');
+    }
+  });
+
+  // Copy code
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent).then(() => {
+      btn.textContent = '✅ Copiado';
+      setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+    });
+  }
+
+  // Init
+  visited.add('home');
+  updateProgress();
+</script>
+</body>
+</html>
